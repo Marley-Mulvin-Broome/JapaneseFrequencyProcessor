@@ -1,4 +1,4 @@
-def percent_of(part: [int|float], total: [int|float]):
+def percent_of(part: [int|float], total: [int|float]) -> float:
     if total == 0:
         return 0
 
