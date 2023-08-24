@@ -16,6 +16,7 @@ from .jp_frequency_list import JapaneseFrequencyList
 # surface
 # white_space
 
+
 def main():
     freq_list = JapaneseFrequencyList()
 

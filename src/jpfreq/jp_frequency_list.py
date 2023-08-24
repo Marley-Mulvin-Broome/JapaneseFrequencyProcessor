@@ -4,10 +4,9 @@ from os.path import isfile as file_exists
 
 from .word_slot import WordSlot, get_unique_wordslots
 from .text_info import TextInfo
-from .frequency_exporter import FrequencyExporter
 from .word_types import WordType
 from .kanji import all_kanji_in_string
-from .util import percent_of
+from .util import percent_of, pos_same_at_index, parse_pos_node
 
 EXCLUDED_WORD_TYPES: list[str] = [
     WordType.PARTICLE.value,
@@ -18,30 +17,9 @@ EXCLUDED_WORD_TYPES: list[str] = [
 ]
 
 
-def pos_same_at_index(pos_1: str, pos_2: str, index: int) -> bool:
-    split_pos_1: list[str] = pos_1.split(",")
-    split_pos_2: list[str] = pos_2.split(",")
-
-    if len(split_pos_1) <= index or len(split_pos_2) <= index:
-        return False
-
-    return split_pos_1[index] == split_pos_2[index]
-
-
-def parse_pos_node(pos: str) -> list[str]:
-    split_pos: list[str] = pos.split(",")
-    new_pos: list[str] = []
-
-    for pos_value in split_pos:
-        if pos_value == "*":
-            break
-
-        new_pos.append(pos_value)
-
-    return new_pos
-
-
-def word_validator_exclude_by_type(input_word: UnidicNode, excluded_word_types: list[str] = EXCLUDED_WORD_TYPES) -> bool:
+def word_validator_exclude_by_type(
+    input_word: UnidicNode, excluded_word_types: list[str] = EXCLUDED_WORD_TYPES
+) -> bool:
     """
     Validates a word by excluding it if it is of a certain type lists in `excluded_word_types`.
 
@@ -51,7 +29,7 @@ def word_validator_exclude_by_type(input_word: UnidicNode, excluded_word_types: 
         The word to validate.
     excluded_word_types : list[str]
         A list of word types to exclude.
-    
+
     Returns
     -------
     bool
@@ -60,30 +38,10 @@ def word_validator_exclude_by_type(input_word: UnidicNode, excluded_word_types: 
     word_classes = parse_pos_node(input_word.pos)
 
     excluded_word_types = [
-        word_type 
-        for word_type in excluded_word_types 
-        if word_type in word_classes
+        word_type for word_type in excluded_word_types if word_type in word_classes
     ]
 
     return excluded_word_types == []
-
-
-def word_rep(word: UnidicNode):
-    """
-    Gets the string representation of a word.
-    This is the lemma of the word.
-
-    Parameters
-    ----------
-    word : UnidicNode
-        The word to get the representation of.
-
-    Returns
-    -------
-    str
-        The string representation of the word.
-    """
-    return f"{word.feature.lemma}"
 
 
 class JapaneseFrequencyList:
@@ -91,7 +49,6 @@ class JapaneseFrequencyList:
     _unique_kanji: dict[str, WordSlot]
     _word_count: int
     _tagger: Tagger
-    _exporter: FrequencyExporter
     _word_validator: Callable[[UnidicNode], bool]
 
     def __init__(
@@ -103,13 +60,16 @@ class JapaneseFrequencyList:
         self._unique_words = {}
         self._unique_kanji = {}
         self._word_count = 0
-        self._exporter = FrequencyExporter()
 
         self._word_validator = word_validator
 
         self._tagger = tagger_instance
         if not self._tagger:
             self._tagger = Tagger("-Owakati")
+        elif not isinstance(self._tagger, Tagger):
+            raise TypeError(
+                f"JapaneseFrequencyList: tagger_instance must be of type fugashi.Tagger, not {type(self._tagger)}"
+            )
 
         if text_to_analyse is not None:
             self.process_texts(text_to_analyse)
@@ -120,11 +80,14 @@ class JapaneseFrequencyList:
     def __repr__(self) -> str:
         text_info = self.generate_text_info()
         return f"JapaneseFrequencyList(\ntext_info={text_info!r}\n)"
-    
+
     def __contains__(self, word: str) -> bool:
         return word in self._unique_words.keys()
-    
+
     def __getitem__(self, word: str) -> list[WordSlot]:
+        if word not in self._unique_words.keys():
+            raise KeyError(f"Word '{word}' not found in frequency list")
+
         return self._unique_words[word]
 
     def _update_kanji(self, word: UnidicNode) -> None:
@@ -141,7 +104,7 @@ class JapaneseFrequencyList:
         Otherwise, it increments the frequency of the word.
 
         This will add frequency to the specific conjugation of the word.
-        
+
         e.g.
         adding ある into [(ある, 1)] will result in [(ある, 2)]
         but adding あった into [(ある, 1)] will result in [(ある, 1), (あった, 1)]
@@ -176,7 +139,9 @@ class JapaneseFrequencyList:
         Returns a list of the most frequent words in the text with the specified limit.
         If limit is -1, then all words are returned.
         """
-        item_array: list[WordSlot] = sorted(self.wordslots, key=lambda x: x.frequency, reverse=True)
+        item_array: list[WordSlot] = sorted(
+            self.wordslots, key=lambda x: x.frequency, reverse=True
+        )
 
         if limit == -1 or limit > len(item_array):
             return item_array
@@ -228,7 +193,9 @@ class JapaneseFrequencyList:
         unique_kanji: int = self.unique_kanji
         unique_kanji_used_once: int = self.unique_kanji_used_once
 
-        unique_kanji_percentage: float = percent_of(unique_kanji_used_once, unique_kanji)
+        unique_kanji_percentage: float = percent_of(
+            unique_kanji_used_once, unique_kanji
+        )
 
         return unique_kanji, unique_kanji_used_once, unique_kanji_percentage
 
@@ -306,9 +273,7 @@ class JapaneseFrequencyList:
         [self.process_text(text) for text in texts_to_process]
 
     def process_file(self, file_path: str) -> None:
-        """
-        
-        """
+        """ """
         if not file_exists(file_path):
             raise FileExistsError(
                 f"process_file: File path passed doesn't exist ({file_path})"

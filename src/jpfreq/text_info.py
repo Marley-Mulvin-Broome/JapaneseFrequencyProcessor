@@ -19,7 +19,7 @@ class TextInfo:
         intended.
         """
         if not isinstance(__value, TextInfo):
-            return NotImplemented
+            raise TypeError
 
         return (
             self.word_count == __value.word_count
