@@ -14,7 +14,6 @@ EXCLUDED_WORD_TYPES: list[str] = [
     WordType.AUXILIARY_VERB.value,
     WordType.SUPPLEMENTARY_SYMBOL.value,
     WordType.BLANK_SPACE.value,
-    WordType.UNINDEPENDENT.value,
     WordType.NUMERAL.value,
 ]
 
@@ -115,6 +114,19 @@ class JapaneseFrequencyList:
         if text_to_analyse is not None:
             self.process_texts(text_to_analyse)
 
+    def __len__(self) -> int:
+        return len(self.wordslots)
+
+    def __repr__(self) -> str:
+        text_info = self.generate_text_info()
+        return f"JapaneseFrequencyList(\ntext_info={text_info!r}\n)"
+    
+    def __contains__(self, word: str) -> bool:
+        return word in self._unique_words.keys()
+    
+    def __getitem__(self, word: str) -> list[WordSlot]:
+        return self._unique_words[word]
+
     def _update_kanji(self, word: UnidicNode) -> None:
         for kanji in all_kanji_in_string(str(word.surface)):
             if kanji not in self._unique_kanji:
@@ -192,7 +204,7 @@ class JapaneseFrequencyList:
 
     @property
     def unique_words_used_once(self) -> int:
-        return get_unique_wordslots(self.wordslots)
+        return len(get_unique_wordslots(self.wordslots))
 
     @property
     def unique_words_all(self) -> tuple[int, int, float]:
@@ -209,7 +221,7 @@ class JapaneseFrequencyList:
 
     @property
     def unique_kanji_used_once(self) -> int:
-        return get_unique_wordslots(self._unique_kanji.values())
+        return len(get_unique_wordslots(self._unique_kanji.values()))
 
     @property
     def unique_kanji_all(self) -> tuple[int, int, float]:
