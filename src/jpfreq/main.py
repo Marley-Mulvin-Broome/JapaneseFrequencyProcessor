@@ -3,38 +3,56 @@
 from .jp_frequency_list import JapaneseFrequencyList
 
 
+# UniDic word contains:
+# char_type
+# feature
+# feature_raw
+# is_unk
+# length
+# pos
+# posid
+# rlength
+# stat
+# surface
+# white_space
+
 def main():
     freq_list = JapaneseFrequencyList()
 
-    freq_list.process_text("ググってください。ググらない。ググります。ググりません。食べてください。食べない。食べます。食べません。")
+    while True:
+        input_text = ""
 
-    txt_info = freq_list.generate_text_info()
+        try:
+            input_text = input("Command> ")
+        except KeyboardInterrupt and EOFError:
+            print()
+            break
 
-    print(txt_info)
+        if input_text == "q":
+            break
+        elif input_text == "c":
+            print(f"Cleared frequency list with {len(freq_list)} entries")
+            freq_list.clear()
+        elif input_text == "p":
+            print(freq_list)
+        elif input_text == "s":
+            for word in freq_list.get_most_frequent():
+                print(word)
+        elif input_text.startswith("s "):
+            word = input_text[2:]
 
-    none_count = 0
+            if word in freq_list:
+                words = freq_list[word]
 
-    duplicates = 0
+                for word in words:
+                    print(word)
+                    print(word.word.feature)
+                    print(word.word.pos)
+            else:
+                print(f"Word '{word}' not found in frequency list")
 
-    previous_words = []
-
-    from pprint import pprint
-    pprint(freq_list._unique_words)
-
-    for frequency_word in freq_list.get_most_frequent(limit=1000):
-        if frequency_word:
-            print(
-                f"Word: {frequency_word.word.feature.lemma}\tFrequency: {frequency_word.frequency}"
-            )
-            duplicates += frequency_word.word.feature.lemma in previous_words
-            previous_words.append(frequency_word)
-            continue
-        none_count += 1
-
-    print(f"Duplicates count: {duplicates}")
-    print(
-        f"None count: {none_count}\nAmount meant to be none: {1000 - txt_info.unique_words}"
-    )
+        else:
+            freq_list.process_line(input_text)
 
 
 if __name__ == "__main__":
