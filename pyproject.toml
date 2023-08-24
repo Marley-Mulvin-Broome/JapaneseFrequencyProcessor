@@ -82,3 +82,6 @@ addopts = [
 ]
 pythonpath = "src"
 disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
+
+[tool.ruff]
+ignore = ["E501"] # ignore long lines, black will handle this
