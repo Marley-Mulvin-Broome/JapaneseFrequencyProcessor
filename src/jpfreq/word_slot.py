@@ -13,5 +13,5 @@ def sum_wordslots(word_slots: Iterable[WordSlot]) -> int:
     return sum(slot.frequency for slot in word_slots)
 
 
-def get_unique_wordslots(word_slots: Iterable[WordSlot]) -> int:
+def get_unique_wordslots(word_slots: Iterable[WordSlot]) -> list[WordSlot]:
     return [slot for slot in word_slots if slot.frequency == 1]
