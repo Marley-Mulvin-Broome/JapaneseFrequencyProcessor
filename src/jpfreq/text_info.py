@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(eq=False)
 class TextInfo:
     word_count: int = 0
     unique_words: int = 0
@@ -10,3 +10,25 @@ class TextInfo:
     unique_kanji: int = 0
     unique_kanji_used_once: int = 0
     unique_kanji_used_once_percentage: float = 0
+
+    def __eq__(self, __value: object) -> bool:
+        """
+        Equals operator for TextInfo class.
+
+        Needs to be implemented as sometimes in testing comparison doesn't work as
+        intended.
+        """
+        if not isinstance(__value, TextInfo):
+            return NotImplemented
+
+        return (
+            self.word_count == __value.word_count
+            and self.unique_words == __value.unique_words
+            and self.unique_words_used_once == __value.unique_words_used_once
+            and self.unique_words_used_once_percentage
+            == __value.unique_words_used_once_percentage
+            and self.unique_kanji == __value.unique_kanji
+            and self.unique_kanji_used_once == __value.unique_kanji_used_once
+            and self.unique_kanji_used_once_percentage
+            == __value.unique_kanji_used_once_percentage
+        )

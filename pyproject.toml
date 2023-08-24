@@ -1,3 +1,83 @@
+[project]
+name = "JPFreq"
+version = "0.1.0" 
+description = "A Python module which allows for the easy frequency analysis of Japanese text"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+keywords = ["Japanese", "Frequency", "Tool", "Language Learning", "Anime", "Manga"]
+authors = [
+  {name = "Marley Mulvin Broome", email = "marley.developer@gmail.com" }
+]
+maintainers = [
+  {name = "Marley Mulvin Broome", email = "marley.developer@gmail.com" }
+]
+
+# For a list of valid classifiers, see https://pypi.org/classifiers/
+classifiers = [  # Optional
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 3 - Alpha",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+
+  # Pick your license as you wish
+  "License :: OSI Approved :: MIT License",
+
+  # Specify the Python versions you support here. In particular, ensure
+  # that you indicate you support Python 3. These classifiers are *not*
+  # checked by "pip install". See instead "python_requires" below.
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+# For an analysis of this field vs pip's requirements files see:
+# https://packaging.python.org/discussions/install-requires-vs-requirements/
+dependencies = [ # Optional
+  "fugashi",
+]
+
+[project.optional-dependencies]
+dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff"]
+
+# List URLs that are relevant to your project
+#
+# This field corresponds to the "Project-URL" and "Home-Page" metadata fields:
+# https://packaging.python.org/specifications/core-metadata/#project-url-multiple-use
+# https://packaging.python.org/specifications/core-metadata/#home-page-optional
+#
+# Examples listed include a pattern for specifying where the package tracks
+# issues, where the source is hosted, where to say thanks to the package
+# maintainers, and where to support the project financially. The key is
+# what's used to render the link text on PyPI.
+[project.urls]  # Optional
+"Homepage" = "https://github.com/Marley-Mulvin-Broome/JapaneseFrequencyProcessor"
+"Source" = "https://github.com/Marley-Mulvin-Broome/JapaneseFrequencyProcessor"
+
+# The following would provide a command line executable called `sample`
+# which executes the function `main` from this package when invoked.
+# [project.scripts]  # Optional
+# sample = "sample:main"
+
+# This is configuration specific to the `setuptools` build backend.
+# If you are using a different build backend, you will need to change this.
+# [tool.setuptools]
+# # If there are data files included in your packages that need to be
+# # installed, specify them here.
+# package-data = {"sample" = ["*.dat"]}
+
 [build-system]
 requires = ["setup>=42"]
 build-backend = "setuptools.build_meta"
+
+######### Tool configs #########
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = "src"

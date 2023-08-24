@@ -134,3 +134,6 @@ dmypy.json
 .idea/
 
 src/venv/
+
+# Ruff linter
+.ruff_cache/

@@ -10,18 +10,8 @@ class WordSlot:
 
 
 def sum_wordslots(word_slots: Iterable[WordSlot]) -> int:
-    count: int = 0
-
-    for slot in word_slots:
-        count += slot.frequency
-
-    return count
+    return sum(slot.frequency for slot in word_slots)
 
 
-def get_wordslots_used_once(word_slots: Iterable[WordSlot]) -> int:
-    count: int = 0
-
-    for slot in word_slots:
-        count += slot.frequency == 1
-
-    return count
+def get_unique_wordslots(word_slots: Iterable[WordSlot]) -> int:
+    return [slot for slot in word_slots if slot.frequency == 1]

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, asdict
 from enum import Enum
 
-from typing import Union, Any
+from typing import Any
 import re
 
 
@@ -19,13 +19,13 @@ class ExportWord:
     frequency: int
 
     def export_as_plain_text(self):
-        return f""
+        return ""
 
     def export_as_json(self):
-        return f""
+        return ""
 
     def export_as_xml(self):
-        return f""
+        return ""
 
     def export_as_html(self):
         return f"<span>{self.kanji}</span>"
@@ -40,7 +40,9 @@ class ExportWord:
         elif export_type == FrequencyExportTypes.html:
             return self.export_as_html()
 
-        raise TypeError(f"export_as_type: invalid FrequencyExportTypes passed ({export_type})")
+        raise TypeError(
+            f"export_as_type: invalid FrequencyExportTypes passed ({export_type})"
+        )
 
 
 WORD_ORDER_REGEX = re.compile(r"(?<=%)(.*?)(?=%)")
@@ -63,11 +65,15 @@ class WordOrder:
 
         variables_to_replace = []
 
-        for variable_match in WORD_ORDER_REGEX_WITHOUT_PERCENTAGE.findall(formatted_string):
+        for variable_match in WORD_ORDER_REGEX_WITHOUT_PERCENTAGE.findall(
+            formatted_string
+        ):
             variables_to_replace.append(variable_match)
 
         for variable_to_replace in variables_to_replace:
-            formatted_string = WORD_ORDER_REGEX.sub(dict_version[variable_to_replace], formatted_string)
+            formatted_string = WORD_ORDER_REGEX.sub(
+                dict_version[variable_to_replace], formatted_string
+            )
 
         return formatted_string
 
@@ -79,6 +85,5 @@ class FrequencyExportSettings:
 
 
 class FrequencyExporter:
-
     def __init__(self):
         pass

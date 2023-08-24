@@ -26,4 +26,4 @@ done
 
 # runs coverage with a html report
 # fails if cov < required_coverage
-pytest -n auto --cov=jpfreq --cov-branch --cov-report=$cov_report --cov-fail-under=$required_coverage tests/
+pytest -n auto --cov=src/jpfreq --cov-branch --cov-report=$cov_report --cov-fail-under=$required_coverage tests/
