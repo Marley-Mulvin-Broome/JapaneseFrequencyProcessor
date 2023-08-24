@@ -1,6 +1,18 @@
 name: Test and Lint
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "src/**"
+      - "test/**"
+      - "dev_requirements.txt"
+      - ".github/workflows/test.yaml"
+  pull_request:
+    paths:
+      - "src/**"
+      - "test/**"
+      - "dev_requirements.txt"
+      - ".github/workflows/test.yaml"
 
 jobs:
   build:
