@@ -44,14 +44,17 @@ if [ "$generate_report" = true ] ; then
   report="--cov=src/jpfreq --cov-branch --cov-report=$cov_report --cov-fail-under=$required_coverage"
 fi
 
+exit_code=0
 
 # runs coverage with a html report
 # fails if cov < required_coverage
-pytest -n auto $report tests/
+pytest -n auto $report tests/ || exit_code=$?
 
-ruff src/jpfreq/*.py
+ruff src/jpfreq/*.py || exit_code=$?
 
 
 if [ "$open_report" = true ] ; then
   open htmlcov/index.html
 fi
+
+exit $exit_code
