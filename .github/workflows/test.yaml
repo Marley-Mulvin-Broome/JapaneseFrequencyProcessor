@@ -22,7 +22,7 @@ jobs:
           pip install ruff pytest
           # stop the build if there are no dev_requirements.txt
           test -f dev_requirements.txt || { echo "No dev_requirements.txt found" ; exit 1; }
-          pip install -r dev_requirements.txt; fi
+          pip install -r dev_requirements.txt
       - name: Lint with ruff
         run: |
           # stop the build if there are Python syntax errors or undefined names
