@@ -8,13 +8,15 @@ required_coverage=95
 open_report=false
 generate_report=false
 report=""
+save_report=false
 
-while getopts "r:c:hog" opt; do
+while getopts "r:c:hogs" opt; do
   case $opt in
     h)
-        echo "Usage: [-og] test.sh [-r <required coverage>] [-c <coverage report type>]"
+        echo "Usage: [-ogs] test.sh [-r <required coverage>] [-c <coverage report type>]"
         echo "-o opens the coverage report in a browser after running tests. Requires -g"
         echo "-g generates a coverage report"
+        echo "-s saves test coverage report to 'pytest-coverage.txt and pytest.xml"
         exit 0
         ;;
     r)
@@ -29,6 +31,9 @@ while getopts "r:c:hog" opt; do
     o)
       open_report=true
       ;;
+    s)
+      save_report=true
+      ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       ;;
@@ -40,15 +45,24 @@ if [ "$open_report" = true ] && [ "$generate_report" = false ] ; then
   exit 1
 fi
 
-if [ "$generate_report" = true ] ; then
+if [ "$generate_report" = true ] && [ "$save_report" = false ]; then
   report="--cov=src/jpfreq --cov-branch --cov-report=$cov_report --cov-fail-under=$required_coverage"
+elif [ "$generate_report" = true ] && [ "$save_report" = true ]; then
+  report="--cov=src/jpfreq --cov-branch --cov-fail-under=$required_coverage --junitxml=pytest.xml --cov-report=term-missing --cov-fail-under=$required_coverage"
 fi
 
 exit_code=0
 
 # runs coverage with a html report
 # fails if cov < required_coverage
-pytest -n auto $report tests/ || exit_code=$?
+result=$(pytest -n auto $report tests/)
+exit_code=$? 
+
+if [ "$save_report" = true ] ; then
+  echo "$result" > pytest-coverage.txt
+fi
+
+echo "$result"
 
 ruff src/jpfreq/*.py || exit_code=$?
 
