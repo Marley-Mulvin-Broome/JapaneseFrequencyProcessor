@@ -33,4 +33,4 @@ jobs:
       - name: Create docs
         run: |
           # create html docs into /docs
-          pdoc --html --force --output-dir docs src/jpfreq
+          pdoc -o docs src/jpfreq
