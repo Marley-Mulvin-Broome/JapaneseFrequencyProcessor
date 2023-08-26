@@ -2,6 +2,21 @@ from fugashi import UnidicNode
 
 
 def percent_of(part: [int | float], total: [int | float]) -> float:
+    """
+    Gets the part of the total as a percentage.
+    Parameters
+    ----------
+    part : [int | float]
+        Fraction of the total.
+
+    total : [int | float]
+        Total value.
+
+    Returns
+    -------
+    float
+        Part percent of total.
+    """
     if total == 0:
         return 0
 
@@ -9,6 +24,19 @@ def percent_of(part: [int | float], total: [int | float]) -> float:
 
 
 def parse_pos_node(pos: str) -> list[str]:
+    """
+    Parses a POS node from fugashi into a list of POS values.
+    This is essentially a wrapper around str.split(",") that gets the `WordType`(s) from the POS value.
+    Parameters
+    ----------
+    pos : str
+        The POS node to parse. This is a comma separated string of POS values. e.g. "名詞,一般,*,*"
+    Returns
+    -------
+    list[str]
+        A list of POS values.
+
+    """
     split_pos: list[str] = pos.split(",")
 
     if len(split_pos) == 1 and split_pos[0] == "":
@@ -19,7 +47,7 @@ def parse_pos_node(pos: str) -> list[str]:
 
 def word_rep(word: UnidicNode):
     """
-    Gets the string representation of a word.
+    Gets the string representation of a UnidicNode.
     This is the lemma of the word.
 
     Parameters
