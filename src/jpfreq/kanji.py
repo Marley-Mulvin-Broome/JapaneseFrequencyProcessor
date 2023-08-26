@@ -11,6 +11,16 @@ class Kanji:
 
 
 def is_character_kanji(input_character: str):
+    """
+    Checks if the input character is a kanji character.
+    Parameters
+    ----------
+    input_character
+
+    Returns
+    -------
+
+    """
     if len(input_character) != 1:
         raise TypeError(
             f"is_character_kanji: Expected str of length 1, got length of {len(input_character)} instead"
