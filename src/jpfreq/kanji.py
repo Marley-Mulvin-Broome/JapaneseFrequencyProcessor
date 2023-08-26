@@ -7,19 +7,23 @@ KANJI_UNICODE_NAME = "CJK UNIFIED IDEOGRAPH"
 @dataclass
 class Kanji:
     representation: str
+    """The text representation of the kanji character."""
     frequency: int
+    """The frequency of the kanji character."""
 
 
-def is_character_kanji(input_character: str):
+def is_character_kanji(input_character: str) -> bool:
     """
     Checks if the input character is a kanji character.
     Parameters
     ----------
-    input_character
+    input_character : str
+        The character to check.
 
     Returns
     -------
-
+    bool
+        Whether the character is a kanji character or not.
     """
     if len(input_character) != 1:
         raise TypeError(
@@ -30,6 +34,18 @@ def is_character_kanji(input_character: str):
 
 
 def all_kanji_in_string(input_string: str) -> list[Kanji]:
+    """
+    Returns all kanji characters in the input string.
+    Parameters
+    ----------
+    input_string : str
+        The string to check.
+
+    Returns
+    -------
+    list[Kanji]
+        A list of all kanji characters in the input string.
+    """
     kanji: list[Kanji] = []
 
     for character in input_string:

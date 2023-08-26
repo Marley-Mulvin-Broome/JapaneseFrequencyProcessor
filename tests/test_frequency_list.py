@@ -483,3 +483,22 @@ def test_word_validator_type_default():
 
 def test_word_validator_type_default_false():
     assert not (word_validator_exclude_by_type(Word("wow", "wow", [WordType.PARTICLE])))
+
+
+get_representation_test_data = [
+    ("俺", "俺"),
+    ("おれ", "俺"),
+    ("行かない", "行く"),
+    ("これ", "此れ"),
+    ("行かれる", "行く"),
+]
+
+
+@pytest.mark.parametrize("word,expected", get_representation_test_data)
+def test_get_representation(word, expected, freq_list):
+    assert freq_list.get_representation(word) == expected
+
+
+def test_get_representation_invalid(freq_list):
+    with pytest.raises(ValueError):
+        freq_list.get_representation("")

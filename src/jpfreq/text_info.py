@@ -34,6 +34,13 @@ class TextInfo:
         )
 
     def to_dict(self) -> dict:
+        """
+        Returns a dictionary representation of the TextInfo object.
+        Returns
+        -------
+        dict
+            A dictionary representation of the TextInfo object.
+        """
         return {
             "word_count": self.word_count,
             "unique_words": self.unique_words,
