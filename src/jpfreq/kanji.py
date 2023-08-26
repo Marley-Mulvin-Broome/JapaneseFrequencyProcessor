@@ -2,10 +2,16 @@ from unicodedata import name as u_name
 from dataclasses import dataclass
 
 KANJI_UNICODE_NAME = "CJK UNIFIED IDEOGRAPH"
+"""The unicode name of a kanji character. 
+Used with the `u_name` function to determine if a code point is a kanji character."""
 
 
 @dataclass
 class Kanji:
+    """
+    A dataclass representing a kanji character.
+    """
+
     representation: str
     """The text representation of the kanji character."""
     frequency: int

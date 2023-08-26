@@ -1,3 +1,13 @@
+"""
+The module containing the JapaneseFrequencyList class. This is the main class of the library.
+
+The main purposes of this class are:
+- To store the frequency of words in a Japanese text.
+- To provide information about the text.
+
+For exporting the frequency list, please see the `exporters` module.
+"""
+
 from fugashi import Tagger
 from typing import Callable
 from os.path import isfile as file_exists
