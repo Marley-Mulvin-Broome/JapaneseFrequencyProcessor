@@ -44,10 +44,4 @@ jobs:
           ruff --format=github --select=E9,F63,F7,F82 --target-version=py310 src/jpfreq/*.py
       - name: Test with pytest
         run: |
-          pytest -n auto --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=src/jpfreq --cov-fail-under=95 tests/ | tee pytest-coverage.txt
-      - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./pytest.xml
+          pytest -n auto --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=src/jpfreq --cov-fail-under=95 tests/
