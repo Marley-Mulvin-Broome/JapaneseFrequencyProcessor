@@ -8,16 +8,6 @@ def percent_of(part: [int | float], total: [int | float]) -> float:
     return (part / total) * 100
 
 
-def pos_same_at_index(pos_1: str, pos_2: str, index: int) -> bool:
-    split_pos_1: list[str] = pos_1.split(",")
-    split_pos_2: list[str] = pos_2.split(",")
-
-    if len(split_pos_1) <= index or len(split_pos_2) <= index:
-        return False
-
-    return split_pos_1[index] == split_pos_2[index]
-
-
 def parse_pos_node(pos: str) -> list[str]:
     split_pos: list[str] = pos.split(",")
 

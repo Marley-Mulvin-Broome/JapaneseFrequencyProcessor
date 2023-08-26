@@ -456,7 +456,7 @@ def test_freq_most_freq_limit_gt_len(freq_list):
 
 
 def test_freq_with_custom_tagger():
-    jpfreq = JapaneseFrequencyList(tagger_instance=Tagger("-Owakati"))
+    JapaneseFrequencyList(tagger_instance=Tagger("-Owakati"))
 
 
 word_validator_type_test_data = [
