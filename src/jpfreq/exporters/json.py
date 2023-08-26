@@ -10,7 +10,7 @@ class JsonExporter(IExporter):
         pass
 
     @staticmethod
-    def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool=False) -> dict:
+    def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> dict:
         frequency = frequency_list.get_most_frequent(limit=limit)
         dictionary = OrderedDict()
 
@@ -19,8 +19,8 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool=False) -> str:
+    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> str:
         return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
     
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool=False) -> Generator[str, None, None]:
+    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> Generator[str, None, None]:
         return super().export_lazy(frequency_list, limit)

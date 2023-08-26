@@ -75,7 +75,7 @@ class JapaneseFrequencyList:
     def __len__(self) -> int:
         return len(self.wordslots)
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> str:  # pragma: no cover
         text_info = self.generate_text_info()
         return f"JapaneseFrequencyList(\ntext_info={text_info!r}\n)"
 

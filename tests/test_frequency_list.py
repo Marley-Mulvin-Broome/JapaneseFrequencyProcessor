@@ -1,5 +1,9 @@
-from jpfreq.jp_frequency_list import JapaneseFrequencyList
+from jpfreq.jp_frequency_list import (
+    JapaneseFrequencyList,
+    word_validator_exclude_by_type,
+)
 from jpfreq.text_info import TextInfo
+from jpfreq.word import WordType, Word
 from fugashi import Tagger
 
 import pytest
@@ -28,7 +32,7 @@ def compare_text_infos(actual: TextInfo, expected: TextInfo):
 
 
 @pytest.fixture
-def freq_list():
+def freq_list(scope="global"):
     return JapaneseFrequencyList()
 
 
@@ -417,3 +421,65 @@ def test_freq_most_freq(text, word, expected, freq_list):
             return
 
     assert False
+
+
+def test_freq_most_freq_limit(freq_list):
+    freq_list.process_text("此れは此れはポテトです")
+
+    frequent_list = freq_list.get_most_frequent(limit=1)
+
+    assert len(frequent_list) == 1
+
+
+def test_freq_most_freq_limit_0(freq_list):
+    freq_list.process_text("此れは此れはポテトです")
+
+    frequent_list = freq_list.get_most_frequent(limit=0)
+
+    assert len(frequent_list) == 0
+
+
+def test_freq_most_freq_limit_negative_one(freq_list):
+    freq_list.process_text("此れは此れはポテトです")
+
+    frequent_list = freq_list.get_most_frequent(limit=-1)
+
+    assert len(frequent_list) == len(freq_list)
+
+
+def test_freq_most_freq_limit_gt_len(freq_list):
+    freq_list.process_text("此れは此れはポテトです")
+
+    frequent_list = freq_list.get_most_frequent(limit=100)
+
+    assert len(frequent_list) == len(freq_list)
+
+
+def test_freq_with_custom_tagger():
+    jpfreq = JapaneseFrequencyList(tagger_instance=Tagger("-Owakati"))
+
+
+word_validator_type_test_data = [
+    (Word("wow", "wow", []), True, []),
+    (Word("wow", "wow", [WordType.VERB]), False, [WordType.VERB]),
+    (Word("wow", "wow", [WordType.I_ADJECTIVE]), True, [WordType.VERB]),
+    (
+        Word("wow", "wow", [WordType.I_ADJECTIVE]),
+        False,
+        [WordType.VERB, WordType.I_ADJECTIVE],
+    ),
+    (Word("wow", "wow", [WordType.I_ADJECTIVE]), True, []),
+]
+
+
+@pytest.mark.parametrize("word,expected,excluded_types", word_validator_type_test_data)
+def test_word_validator_type(word, expected, excluded_types):
+    assert word_validator_exclude_by_type(word, excluded_types) == expected
+
+
+def test_word_validator_type_default():
+    assert word_validator_exclude_by_type(Word("wow", "wow", [WordType.VERB]))
+
+
+def test_word_validator_type_default_false():
+    assert not (word_validator_exclude_by_type(Word("wow", "wow", [WordType.PARTICLE])))
