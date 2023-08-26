@@ -32,3 +32,14 @@ class TextInfo:
             and self.unique_kanji_used_once_percentage
             == __value.unique_kanji_used_once_percentage
         )
+
+    def to_dict(self) -> dict:
+        return {
+            "word_count": self.word_count,
+            "unique_words": self.unique_words,
+            "unique_words_used_once": self.unique_words_used_once,
+            "unique_words_used_once_percentage": self.unique_words_used_once_percentage,
+            "unique_kanji": self.unique_kanji,
+            "unique_kanji_used_once": self.unique_kanji_used_once,
+            "unique_kanji_used_once_percentage": self.unique_kanji_used_once_percentage,
+        }

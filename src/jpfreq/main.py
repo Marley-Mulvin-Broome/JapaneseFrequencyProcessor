@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from .jp_frequency_list import JapaneseFrequencyList
-
+from .exporters.iexporter import IExporter
+from .exporters.json import JsonExporter
 
 # UniDic word contains:
 # char_type
@@ -17,6 +18,15 @@ from .jp_frequency_list import JapaneseFrequencyList
 # white_space
 
 
+def get_exporter(exporter_name: str) -> IExporter:
+    exporter_name = exporter_name.lower().strip()
+
+    if exporter_name == "json":
+        return JsonExporter()
+
+    raise ValueError(f"Unknown exporter '{exporter_name}'")
+
+
 def main():
     freq_list = JapaneseFrequencyList()
 
@@ -25,7 +35,10 @@ def main():
 
         try:
             input_text = input("Command> ")
-        except KeyboardInterrupt and EOFError:
+        except EOFError:
+            print()
+            break
+        except KeyboardInterrupt:
             print()
             break
 
@@ -51,6 +64,24 @@ def main():
                     print(word.word.pos)
             else:
                 print(f"Word '{word}' not found in frequency list")
+
+        elif input_text.startswith("e "):
+            exporter_name = input_text.split(" ")[1]
+
+            exporter = None
+
+            try:
+                exporter = get_exporter(exporter_name)
+            except ValueError as e:
+                print(e)
+                continue
+
+            print(exporter.export(freq_list))
+
+        elif input_text.startswith("i "):
+            input_text = input_text[2:]
+            for word in freq_list.parse_line(input_text):
+                print(word)
 
         else:
             freq_list.process_line(input_text)

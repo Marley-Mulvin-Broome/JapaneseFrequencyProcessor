@@ -329,7 +329,7 @@ def test_texts(texts, expected_text_info, freq_list):
 def test_file(texts, expected_text_info, tmp_path, freq_list):
     file_path = tmp_path / "test.txt"
     file_path.write_text("\n".join(texts), encoding="utf-8")
-    freq_list.process_file(file_path)
+    freq_list.process_file(str(file_path))
     text_info = freq_list.generate_text_info()
 
     compare_text_infos(text_info, expected_text_info)
@@ -412,7 +412,7 @@ def test_freq_most_freq(text, word, expected, freq_list):
     frequent_list = freq_list.get_most_frequent()
 
     for word_slot in frequent_list:
-        if word_slot.word.surface == word:
+        if word in word_slot:
             assert word_slot.frequency == expected
             return
 

@@ -1,10 +1,10 @@
-from jpfreq.kanji import is_character_kanji, all_kanji_in_string
+from jpfreq.kanji import is_character_kanji, all_kanji_in_string, Kanji
 
 import pytest
 
 # hiragana unicode starts at ぁ ends at ゖ
-hiraganas = [chr(x) for x in range(ord("ぁ"), ord("ゖ") + 1)]
-katakanas = [chr(x) for x in range(ord("゠"), ord("ヿ") + 1)]
+hiragana = [chr(x) for x in range(ord("ぁ"), ord("ゖ") + 1)]
+katakana = [chr(x) for x in range(ord("゠"), ord("ヿ") + 1)]
 
 kanji_test = [
     ("日", True),
@@ -14,8 +14,8 @@ kanji_test = [
     ("你", True),  # Chinese character (hanzi)
 ]
 
-kanji_test.extend([(x, False) for x in hiraganas])
-kanji_test.extend([(x, False) for x in katakanas])
+kanji_test.extend([(x, False) for x in hiragana])
+kanji_test.extend([(x, False) for x in katakana])
 
 
 @pytest.mark.parametrize("input_character,expected", kanji_test)
@@ -38,15 +38,15 @@ def test_is_character_kanji_errors(input_character, expected):
 
 
 kanji_in_string_test = [
-    ("日本語", ["日", "本", "語"]),
+    ("日本語", [Kanji("日", 1), Kanji("本", 1), Kanji("語", 1)]),
     ("ここ", []),
-    ("この本は面白いです", ["本", "面", "白"]),
-    ("ググれば、分かると思うよ", ["分", "思"]),
+    ("この本は面白いです", [Kanji("本", 1), Kanji("面", 1), Kanji("白", 1)]),
+    ("ググれば、分かると思うよ", [Kanji("分", 1), Kanji("思", 1)]),
     ("ググってください", []),
     ("ググります", []),
-    ("傘がパクられた", ["傘"]),
-    ("你", ["你"]),  # Chinese character (hanzi)
-    ("この畑は母のものです", ["畑", "母"]),  # 和製漢字 Kanji made in Japan
+    ("傘がパクられた", [Kanji("傘", 1)]),
+    ("你", [Kanji("你", 1)]),  # Chinese character (hanzi)
+    ("この畑は母のものです", [Kanji("畑", 1), Kanji("母", 1)]),  # 和製漢字 Kanji made in Japan
 ]
 
 

@@ -1,6 +1,13 @@
 from unicodedata import name as u_name
+from dataclasses import dataclass
 
 KANJI_UNICODE_NAME = "CJK UNIFIED IDEOGRAPH"
+
+
+@dataclass
+class Kanji:
+    representation: str
+    frequency: int
 
 
 def is_character_kanji(input_character: str):
@@ -12,11 +19,11 @@ def is_character_kanji(input_character: str):
     return KANJI_UNICODE_NAME in u_name(input_character)
 
 
-def all_kanji_in_string(input_string: str) -> list[str]:
-    kanji: list[str] = []
+def all_kanji_in_string(input_string: str) -> list[Kanji]:
+    kanji: list[Kanji] = []
 
     for character in input_string:
         if is_character_kanji(character):
-            kanji.append(character)
+            kanji.append(Kanji(character, 1))
 
     return kanji

@@ -1,25 +1,23 @@
-from fugashi import Tagger, UnidicNode
+from fugashi import Tagger
 from typing import Callable
 from os.path import isfile as file_exists
 
 from .word_slot import WordSlot, get_unique_wordslots
 from .text_info import TextInfo
-from .word_types import WordType
-from .kanji import all_kanji_in_string
-from .util import percent_of, pos_same_at_index, parse_pos_node
+from .kanji import all_kanji_in_string, Kanji
+from .util import percent_of
+from .word import Word, WordType
 
-EXCLUDED_WORD_TYPES: list[str] = [
-    WordType.PARTICLE.value,
-    WordType.AUXILIARY_VERB.value,
-    WordType.SUPPLEMENTARY_SYMBOL.value,
-    WordType.BLANK_SPACE.value,
-    WordType.NUMERAL.value,
+EXCLUDED_WORD_TYPES: list[WordType] = [
+    WordType.PARTICLE,
+    WordType.AUXILIARY_VERB,
+    WordType.SUPPLEMENTARY_SYMBOL,
+    WordType.BLANK_SPACE,
+    WordType.NUMERAL,
 ]
 
 
-def word_validator_exclude_by_type(
-    input_word: UnidicNode, excluded_word_types: list[str] = EXCLUDED_WORD_TYPES
-) -> bool:
+def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -> bool:
     """
     Validates a word by excluding it if it is of a certain type lists in `excluded_word_types`.
 
@@ -35,25 +33,25 @@ def word_validator_exclude_by_type(
     bool
         Whether the word is valid or not.
     """
-    word_classes = parse_pos_node(input_word.pos)
+    if excluded_word_types is None:
+        excluded_word_types = EXCLUDED_WORD_TYPES
+    for word_type in input_word.types:
+        if word_type in excluded_word_types:
+            return False
 
-    excluded_word_types = [
-        word_type for word_type in excluded_word_types if word_type in word_classes
-    ]
-
-    return excluded_word_types == []
+    return True
 
 
 class JapaneseFrequencyList:
-    _unique_words: dict[str, list[WordSlot]]
-    _unique_kanji: dict[str, WordSlot]
+    _unique_words: dict[str, WordSlot]
+    _unique_kanji: dict[str, Kanji]
     _word_count: int
     _tagger: Tagger
-    _word_validator: Callable[[UnidicNode], bool]
+    _word_validator: Callable[[Word], bool]
 
     def __init__(
         self,
-        word_validator: Callable[[UnidicNode], bool] = word_validator_exclude_by_type,
+        word_validator: Callable[[Word], bool] = word_validator_exclude_by_type,
         text_to_analyse: list = None,
         tagger_instance=None,
     ):
@@ -84,80 +82,15 @@ class JapaneseFrequencyList:
     def __contains__(self, word: str) -> bool:
         return word in self._unique_words.keys()
 
-    def __getitem__(self, word: str) -> list[WordSlot]:
+    def __getitem__(self, word: str) -> WordSlot:
         if word not in self._unique_words.keys():
             raise KeyError(f"Word '{word}' not found in frequency list")
 
         return self._unique_words[word]
 
-    def _update_kanji(self, word: UnidicNode) -> None:
-        for kanji in all_kanji_in_string(str(word.surface)):
-            if kanji not in self._unique_kanji:
-                self._unique_kanji[kanji] = WordSlot(word, 1)
-                continue
-
-            self._unique_kanji[kanji].frequency += 1
-
-    def _append_representation(self, word: UnidicNode) -> None:
-        """
-        Appends the word to the list of unique words if it doesn't already exist.
-        Otherwise, it increments the frequency of the word.
-
-        This will add frequency to the specific conjugation of the word.
-
-        e.g.
-        adding ある into [(ある, 1)] will result in [(ある, 2)]
-        but adding あった into [(ある, 1)] will result in [(ある, 1), (あった, 1)]
-        """
-        word_list = self._unique_words[word.feature.lemma]
-
-        for word_slot in word_list:
-            if pos_same_at_index(word_slot.word.pos, word.pos, 0):
-                word_slot.frequency += 1
-                return
-
-        # otherwise, we need to add another word to the list
-        word_list.append(WordSlot(word, 1))
-
-    def _loop_wordslots(self, loop_function: Callable[[WordSlot], None] = None) -> None:
-        for word_list in self._unique_words.values():
-            for word_slot in word_list:
-                if loop_function:
-                    loop_function(word_slot)
-
-    def clear(self) -> None:
-        """
-        Clears the frequency list of all words and kanji.
-        """
-        self._word_count = 0
-
-        self._unique_words.clear()
-        self._unique_kanji.clear()
-
-    def get_most_frequent(self, limit: int = 100) -> list[WordSlot]:
-        """
-        Returns a list of the most frequent words in the text with the specified limit.
-        If limit is -1, then all words are returned.
-        """
-        item_array: list[WordSlot] = sorted(
-            self.wordslots, key=lambda x: x.frequency, reverse=True
-        )
-
-        if limit == -1 or limit > len(item_array):
-            return item_array
-
-        return item_array[:limit]
-
     @property
     def wordslots(self) -> list[WordSlot]:
-        slots: list[WordSlot] = []
-
-        def add_slot(s):
-            slots.append(s)
-
-        self._loop_wordslots(add_slot)
-
-        return slots
+        return list(self._unique_words.values())
 
     @property
     def word_count(self) -> int:
@@ -186,7 +119,9 @@ class JapaneseFrequencyList:
 
     @property
     def unique_kanji_used_once(self) -> int:
-        return len(get_unique_wordslots(self._unique_kanji.values()))
+        return len(
+            [kanji for kanji in self._unique_kanji.values() if kanji.frequency == 1]
+        )
 
     @property
     def unique_kanji_all(self) -> tuple[int, int, float]:
@@ -198,6 +133,29 @@ class JapaneseFrequencyList:
         )
 
         return unique_kanji, unique_kanji_used_once, unique_kanji_percentage
+
+    def clear(self) -> None:
+        """
+        Clears the frequency list of all words and kanji.
+        """
+        self._word_count = 0
+
+        self._unique_words.clear()
+        self._unique_kanji.clear()
+
+    def get_most_frequent(self, limit: int = 100) -> list[WordSlot]:
+        """
+        Returns a list of the most frequent words in the text with the specified limit.
+        If limit is -1, then all words are returned.
+        """
+        item_array: list[WordSlot] = sorted(
+            self.wordslots, key=lambda x: x.frequency, reverse=True
+        )
+
+        if limit == -1 or limit > len(item_array):
+            return item_array
+
+        return item_array[:limit]
 
     def generate_text_info(self) -> TextInfo:
         (
@@ -221,7 +179,14 @@ class JapaneseFrequencyList:
             unique_kanji_percentage,
         )
 
-    def add_word(self, word: UnidicNode) -> None:
+    def add_kanji(self, kanji: Kanji) -> None:
+        if kanji.representation in self._unique_kanji:
+            self._unique_kanji[kanji.representation].frequency += 1
+            return
+
+        self._unique_kanji[kanji.representation] = kanji
+
+    def add_word(self, word: Word) -> None:
         """
         Adds a word to the frequency list.
 
@@ -232,32 +197,31 @@ class JapaneseFrequencyList:
         """
         self._word_count += 1
 
-        self._update_kanji(word)
-
-        representation = word.feature.lemma
-
-        if not representation:
-            return
-
-        if representation in self._unique_words.keys():
-            self._append_representation(word)
+        if word.representation in self._unique_words.keys():
+            self._unique_words[word.representation].add_word(word)
             return
 
         # if there is no representation of this word then we must add one
-        self._unique_words[representation] = [WordSlot(word, 1)]
+        self._unique_words[word.representation] = WordSlot([word])
 
-    def parse_line(self, line: str) -> list[UnidicNode]:
+    def parse_line(self, line: str) -> tuple[list[Word], list[Kanji]]:
         """
-        Parses a line of text into a list of UnidicNodes.
+        Parses a line of text into a list of Words, and a list of Kanji.
+        Backbone of all parsing.
         """
-        return self._tagger(line)
+        words = self._tagger(line)
+
+        return [Word.from_node(word) for word in words], all_kanji_in_string(line)
 
     def process_line(self, line_to_process: str) -> None:
         """
-        Parses a line, adding the valid words to the frequency list.
+        Parses a line, adding the valid words and all kanji to the frequency list.
+        All other processing functions boil down to this.
         """
-        words = self.parse_line(line_to_process)
+        line_to_process = line_to_process.replace("\n", "")
+        words, kanji = self.parse_line(line_to_process)
 
+        [self.add_kanji(kanji) for kanji in kanji]
         [self.add_word(word) for word in words if self._word_validator(word)]
 
     def process_text(self, text_to_process: str) -> None:

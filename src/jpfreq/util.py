@@ -42,4 +42,8 @@ def word_rep(word: UnidicNode):
     str
         The string representation of the word.
     """
-    return f"{word.feature.lemma}"
+
+    if word.feature.lemma is None:
+        return word.surface
+
+    return f"{word.feature.lemma.split('-')[0]}"
