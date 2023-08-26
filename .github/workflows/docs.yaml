@@ -34,3 +34,14 @@ jobs:
         run: |
           # create html docs into /docs
           pdoc -o docs src/jpfreq
+
+      - name: Push new docs
+        run: |
+          git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          if (git diff --shortstat | grep '[0-9]'); then \
+              git add .; \
+              git commit -m "Generating docs via GitHub Actions"; \
+              git push origin HEAD:${GITHUB_REF}; \
+          fi
