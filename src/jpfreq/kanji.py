@@ -1,3 +1,7 @@
+"""
+.. include:: ../../documentation/kanji.md
+"""
+
 from unicodedata import name as u_name
 from dataclasses import dataclass
 

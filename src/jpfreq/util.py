@@ -1,3 +1,7 @@
+"""
+.. include:: ../../documentation/util.md
+"""
+
 from fugashi import UnidicNode
 
 

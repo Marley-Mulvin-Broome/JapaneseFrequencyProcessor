@@ -1,3 +1,7 @@
+"""
+.. include:: ../../documentation/word.md
+"""
+
 from enum import Enum
 from dataclasses import dataclass
 from fugashi import UnidicNode
@@ -84,6 +88,19 @@ class Word:
 
     @staticmethod
     def from_node(node: UnidicNode) -> "Word":
+        """
+        Creates a Word from a UnidicNode.
+        Parameters
+        ----------
+        node : UnidicNode
+            The node to create the word from.
+
+        Returns
+        -------
+        Word
+            The created word.
+
+        """
         return Word(
             representation=word_rep(node),
             surface=node.surface,
@@ -92,6 +109,13 @@ class Word:
         )
 
     def to_dict(self):
+        """
+        Converts the word to a dictionary.
+        Returns
+        -------
+        dict
+            The dictionary representation of the word.
+        """
         return {
             "representation": self.representation,
             "surface": self.surface,

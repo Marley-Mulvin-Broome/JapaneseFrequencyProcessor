@@ -30,8 +30,7 @@ jobs:
 
       - name: Build 🔧
         run: |
-          pdoc --html --force -o docs src/jpfreq
-          cp -f docs/jpfreq/* docs/
+          ./docs.sh
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
