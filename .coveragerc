@@ -1,0 +1,9 @@
+[report]
+omit =
+    src/jpfreq/main.py
+    src/jpfreq/exporters/iexporter.py
+
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == .__main__.:
