@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r dev_requirements.txt
 
-      - name: Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Build 🔧
         run: |
           pdoc --html --force -o docs src/jpfreq
 
@@ -36,3 +36,4 @@ jobs:
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: docs # The folder the action should deploy.
+          commit-message: "Docs: ${{ github.sha }}" # The commit message for the deployment.
