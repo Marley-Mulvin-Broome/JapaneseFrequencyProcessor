@@ -5,7 +5,7 @@ description = "A Python module which allows for the easy frequency analysis of J
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-keywords = ["Japanese", "Frequency", "Tool", "Language Learning", "Anime", "Manga"]
+keywords = ["Japanese", "Frequency", "Tool", "Language Learning", "Anime", "Manga", "Japanese Learning", "Japanese Study"]
 authors = [
   {name = "Marley Mulvin Broome", email = "marley.developer@gmail.com" }
 ]
@@ -22,7 +22,6 @@ classifiers = [  # Optional
 
   # Indicate who your project is intended for
   "Intended Audience :: Developers",
-  "Topic :: Natural Language :: Japanese",
 
   # Pick your license as you wish
   "License :: OSI Approved :: MIT License",
@@ -33,6 +32,8 @@ classifiers = [  # Optional
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3 :: Only",
+  "Natural Language :: Japanese",
+  "Topic :: Text Processing :: Linguistic",
 ]
 
 # For an analysis of this field vs pip's requirements files see:
@@ -42,7 +43,7 @@ dependencies = [ # Optional
 ]
 
 [project.optional-dependencies]
-dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff", "pdoc3", "build"]
+dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff", "pdoc3", "build", "twine"]
 
 # List URLs that are relevant to your project
 #
