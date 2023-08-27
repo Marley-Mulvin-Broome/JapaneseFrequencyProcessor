@@ -32,7 +32,7 @@ to process Japanese text.
 
 ## Usage
 
-For detailed usage, see the [documentation](https://marley-mulvin-broome.github.io/JapaneseFrequencyProcessor).
+For detailed usage, see the [documentation](https://marley-mulvin-broome.github.io/JapaneseFrequencyProcessor/jpfreq/index.html).
 
 ### Getting the most frequent words
 
