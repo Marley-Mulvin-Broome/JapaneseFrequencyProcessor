@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>jpfreq.word_slot API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Word Slot" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,16 @@
 <h1 class="title">Module <code>jpfreq.word_slot</code></h1>
 </header>
 <section id="section-intro">
+<h1 id="word-slot">Word Slot</h1>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from dataclasses import dataclass
+<pre><code class="python">&#34;&#34;&#34;
+.. include:: ../../documentation/word_slot.md
+&#34;&#34;&#34;
+
+from dataclasses import dataclass
 from typing import Iterable
 
 from .word import Word
@@ -36,7 +41,22 @@ from .word import Word
 class WordSlot:
     words: list[Word]
 
-    def __contains__(self, item):
+    def __contains__(self, item: [Word | str]):
+        &#34;&#34;&#34;
+        Checks if the word slot contains the item.
+
+        Compares the item to the words directly if the item is of type Word.
+        Compares the item to the word surfaces if the item is of type str.
+        Parameters
+        ----------
+        item : Word | str
+            The item to check.
+
+        Returns
+        -------
+        bool
+            Whether the word slot contains the item or not.
+        &#34;&#34;&#34;
         if isinstance(item, Word):
             return item in self.words
 
@@ -53,7 +73,34 @@ class WordSlot:
         &#34;&#34;&#34;
         return self.frequency
 
+    @property
+    def frequency(self) -&gt; int:
+        &#34;&#34;&#34;
+        The frequency of the word slot.
+
+        This is the sum of the frequencies of all words in the word slot.
+        Returns
+        -------
+        int
+            The frequency of the word slot.
+        &#34;&#34;&#34;
+        return sum(word.frequency for word in self.words)
+
     def to_dict(self, combine: bool = False) -&gt; dict:
+        &#34;&#34;&#34;
+        Converts the word slot to a dictionary.
+        Parameters
+        ----------
+        combine : bool
+            Whether to combine the words in the word slot or not. If True, a single word is returned with the combined
+            frequency of all words in the word slot. The surface becomes the representation of the first word in the
+            word slot. If False, a list of words is returned.
+
+        Returns
+        -------
+        dict
+            The dictionary representation of the word slot.
+        &#34;&#34;&#34;
         if not self.words:
             return {}
 
@@ -77,6 +124,13 @@ class WordSlot:
         return {&#34;words&#34;: words_array}
 
     def add_word(self, word: Word) -&gt; None:
+        &#34;&#34;&#34;
+        Adds a word to the word slot.
+        Parameters
+        ----------
+        word : Word
+            The word to add to the word slot.
+        &#34;&#34;&#34;
         for old_word in self.words:
             if old_word.surface == word.surface:
                 old_word.frequency += 1
@@ -84,12 +138,20 @@ class WordSlot:
 
         self.words.append(word)
 
-    @property
-    def frequency(self) -&gt; int:
-        return sum(word.frequency for word in self.words)
-
 
 def get_unique_wordslots(word_slots: Iterable[WordSlot]) -&gt; list[WordSlot]:
+    &#34;&#34;&#34;
+    Gets the unique word slots from a list of word slots.
+    Parameters
+    ----------
+    word_slots : Iterable[WordSlot]
+        The word slots to get the unique word slots from.
+
+    Returns
+    -------
+    list[WordSlot]
+        The unique word slots.
+    &#34;&#34;&#34;
     return [slot for slot in word_slots if slot.frequency == 1]</code></pre>
 </details>
 </section>
@@ -104,12 +166,35 @@ def get_unique_wordslots(word_slots: Iterable[WordSlot]) -&gt; list[WordSlot]:
 <span>def <span class="ident">get_unique_wordslots</span></span>(<span>word_slots: Iterable[<a title="jpfreq.word_slot.WordSlot" href="#jpfreq.word_slot.WordSlot">WordSlot</a>]) ‑> list[<a title="jpfreq.word_slot.WordSlot" href="#jpfreq.word_slot.WordSlot">WordSlot</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Gets the unique word slots from a list of word slots.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>word_slots</code></strong> :&ensp;<code>Iterable[<a title="jpfreq.word_slot.WordSlot" href="#jpfreq.word_slot.WordSlot">WordSlot</a>]</code></dt>
+<dd>The word slots to get the unique word slots from.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[<a title="jpfreq.word_slot.WordSlot" href="#jpfreq.word_slot.WordSlot">WordSlot</a>]</code></dt>
+<dd>The unique word slots.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_unique_wordslots(word_slots: Iterable[WordSlot]) -&gt; list[WordSlot]:
+    &#34;&#34;&#34;
+    Gets the unique word slots from a list of word slots.
+    Parameters
+    ----------
+    word_slots : Iterable[WordSlot]
+        The word slots to get the unique word slots from.
+
+    Returns
+    -------
+    list[WordSlot]
+        The unique word slots.
+    &#34;&#34;&#34;
     return [slot for slot in word_slots if slot.frequency == 1]</code></pre>
 </details>
 </dd>
@@ -132,7 +217,22 @@ def get_unique_wordslots(word_slots: Iterable[WordSlot]) -&gt; list[WordSlot]:
 class WordSlot:
     words: list[Word]
 
-    def __contains__(self, item):
+    def __contains__(self, item: [Word | str]):
+        &#34;&#34;&#34;
+        Checks if the word slot contains the item.
+
+        Compares the item to the words directly if the item is of type Word.
+        Compares the item to the word surfaces if the item is of type str.
+        Parameters
+        ----------
+        item : Word | str
+            The item to check.
+
+        Returns
+        -------
+        bool
+            Whether the word slot contains the item or not.
+        &#34;&#34;&#34;
         if isinstance(item, Word):
             return item in self.words
 
@@ -149,7 +249,34 @@ class WordSlot:
         &#34;&#34;&#34;
         return self.frequency
 
+    @property
+    def frequency(self) -&gt; int:
+        &#34;&#34;&#34;
+        The frequency of the word slot.
+
+        This is the sum of the frequencies of all words in the word slot.
+        Returns
+        -------
+        int
+            The frequency of the word slot.
+        &#34;&#34;&#34;
+        return sum(word.frequency for word in self.words)
+
     def to_dict(self, combine: bool = False) -&gt; dict:
+        &#34;&#34;&#34;
+        Converts the word slot to a dictionary.
+        Parameters
+        ----------
+        combine : bool
+            Whether to combine the words in the word slot or not. If True, a single word is returned with the combined
+            frequency of all words in the word slot. The surface becomes the representation of the first word in the
+            word slot. If False, a list of words is returned.
+
+        Returns
+        -------
+        dict
+            The dictionary representation of the word slot.
+        &#34;&#34;&#34;
         if not self.words:
             return {}
 
@@ -173,16 +300,19 @@ class WordSlot:
         return {&#34;words&#34;: words_array}
 
     def add_word(self, word: Word) -&gt; None:
+        &#34;&#34;&#34;
+        Adds a word to the word slot.
+        Parameters
+        ----------
+        word : Word
+            The word to add to the word slot.
+        &#34;&#34;&#34;
         for old_word in self.words:
             if old_word.surface == word.surface:
                 old_word.frequency += 1
                 return
 
-        self.words.append(word)
-
-    @property
-    def frequency(self) -&gt; int:
-        return sum(word.frequency for word in self.words)</code></pre>
+        self.words.append(word)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -195,13 +325,29 @@ class WordSlot:
 <dl>
 <dt id="jpfreq.word_slot.WordSlot.frequency"><code class="name">var <span class="ident">frequency</span> : int</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The frequency of the word slot.</p>
+<p>This is the sum of the frequencies of all words in the word slot.
+Returns</p>
+<hr>
+<dl>
+<dt><code>int</code></dt>
+<dd>The frequency of the word slot.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def frequency(self) -&gt; int:
+    &#34;&#34;&#34;
+    The frequency of the word slot.
+
+    This is the sum of the frequencies of all words in the word slot.
+    Returns
+    -------
+    int
+        The frequency of the word slot.
+    &#34;&#34;&#34;
     return sum(word.frequency for word in self.words)</code></pre>
 </details>
 </dd>
@@ -212,12 +358,25 @@ def frequency(self) -&gt; int:
 <span>def <span class="ident">add_word</span></span>(<span>self, word: <a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Adds a word to the word slot.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>word</code></strong> :&ensp;<code>Word</code></dt>
+<dd>The word to add to the word slot.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_word(self, word: Word) -&gt; None:
+    &#34;&#34;&#34;
+    Adds a word to the word slot.
+    Parameters
+    ----------
+    word : Word
+        The word to add to the word slot.
+    &#34;&#34;&#34;
     for old_word in self.words:
         if old_word.surface == word.surface:
             old_word.frequency += 1
@@ -230,12 +389,39 @@ def frequency(self) -&gt; int:
 <span>def <span class="ident">to_dict</span></span>(<span>self, combine: bool = False) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Converts the word slot to a dictionary.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>combine</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to combine the words in the word slot or not. If True, a single word is returned with the combined
+frequency of all words in the word slot. The surface becomes the representation of the first word in the
+word slot. If False, a list of words is returned.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>The dictionary representation of the word slot.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def to_dict(self, combine: bool = False) -&gt; dict:
+    &#34;&#34;&#34;
+    Converts the word slot to a dictionary.
+    Parameters
+    ----------
+    combine : bool
+        Whether to combine the words in the word slot or not. If True, a single word is returned with the combined
+        frequency of all words in the word slot. The surface becomes the representation of the first word in the
+        word slot. If False, a list of words is returned.
+
+    Returns
+    -------
+    dict
+        The dictionary representation of the word slot.
+    &#34;&#34;&#34;
     if not self.words:
         return {}
 
@@ -267,7 +453,9 @@ def frequency(self) -&gt; int:
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#word-slot">Word Slot</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>

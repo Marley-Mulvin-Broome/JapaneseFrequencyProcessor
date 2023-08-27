@@ -26,7 +26,11 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from json import dumps
+<pre><code class="python">&#34;&#34;&#34;
+.. include:: ../../../documentation/exporters/json.md
+&#34;&#34;&#34;
+
+from json import dumps
 from collections import OrderedDict
 from typing import Generator
 from ..jp_frequency_list import JapaneseFrequencyList
@@ -39,6 +43,22 @@ class JsonExporter(IExporter):
 
     @staticmethod
     def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; dict:
+        &#34;&#34;&#34;
+        Creates a dictionary that can be exported to JSON.
+        Parameters
+        ----------
+        frequency_list : JapaneseFrequencyList
+            The frequency list to export
+        limit : int
+            The number of words to export
+        combine : bool
+            Whether to combine the word slots or not
+
+        Returns
+        -------
+        dict
+            The dictionary that can be exported to JSON
+        &#34;&#34;&#34;
         frequency = frequency_list.get_most_frequent(limit=limit)
         dictionary = OrderedDict()
 
@@ -48,6 +68,22 @@ class JsonExporter(IExporter):
         return dictionary
 
     def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+        &#34;&#34;&#34;
+        Exports the frequency list to JSON.
+        Parameters
+        ----------
+        frequency_list : JapaneseFrequencyList
+            The frequency list to export
+        limit
+            The MAX number of words to export
+        combine
+            Whether to combine the word slots or not
+
+        Returns
+        -------
+        str
+            The JSON string
+        &#34;&#34;&#34;
         return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
     
     def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
@@ -78,6 +114,22 @@ class JsonExporter(IExporter):
 
     @staticmethod
     def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; dict:
+        &#34;&#34;&#34;
+        Creates a dictionary that can be exported to JSON.
+        Parameters
+        ----------
+        frequency_list : JapaneseFrequencyList
+            The frequency list to export
+        limit : int
+            The number of words to export
+        combine : bool
+            Whether to combine the word slots or not
+
+        Returns
+        -------
+        dict
+            The dictionary that can be exported to JSON
+        &#34;&#34;&#34;
         frequency = frequency_list.get_most_frequent(limit=limit)
         dictionary = OrderedDict()
 
@@ -87,6 +139,22 @@ class JsonExporter(IExporter):
         return dictionary
 
     def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+        &#34;&#34;&#34;
+        Exports the frequency list to JSON.
+        Parameters
+        ----------
+        frequency_list : JapaneseFrequencyList
+            The frequency list to export
+        limit
+            The MAX number of words to export
+        combine
+            Whether to combine the word slots or not
+
+        Returns
+        -------
+        str
+            The JSON string
+        &#34;&#34;&#34;
         return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
     
     def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
@@ -102,12 +170,43 @@ class JsonExporter(IExporter):
 <span>def <span class="ident">export</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False) ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Exports the frequency list to JSON.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>frequency_list</code></strong> :&ensp;<code>JapaneseFrequencyList</code></dt>
+<dd>The frequency list to export</dd>
+<dt><strong><code>limit</code></strong></dt>
+<dd>The MAX number of words to export</dd>
+<dt><strong><code>combine</code></strong></dt>
+<dd>Whether to combine the word slots or not</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The JSON string</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+    &#34;&#34;&#34;
+    Exports the frequency list to JSON.
+    Parameters
+    ----------
+    frequency_list : JapaneseFrequencyList
+        The frequency list to export
+    limit
+        The MAX number of words to export
+    combine
+        Whether to combine the word slots or not
+
+    Returns
+    -------
+    str
+        The JSON string
+    &#34;&#34;&#34;
     return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)</code></pre>
 </details>
 </dd>

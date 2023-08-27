@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>jpfreq.word API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Word" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,16 @@
 <h1 class="title">Module <code>jpfreq.word</code></h1>
 </header>
 <section id="section-intro">
+<h1 id="word">Word</h1>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from enum import Enum
+<pre><code class="python">&#34;&#34;&#34;
+.. include:: ../../documentation/word.md
+&#34;&#34;&#34;
+
+from enum import Enum
 from dataclasses import dataclass
 from fugashi import UnidicNode
 from .util import parse_pos_node, word_rep
@@ -112,6 +117,19 @@ class Word:
 
     @staticmethod
     def from_node(node: UnidicNode) -&gt; &#34;Word&#34;:
+        &#34;&#34;&#34;
+        Creates a Word from a UnidicNode.
+        Parameters
+        ----------
+        node : UnidicNode
+            The node to create the word from.
+
+        Returns
+        -------
+        Word
+            The created word.
+
+        &#34;&#34;&#34;
         return Word(
             representation=word_rep(node),
             surface=node.surface,
@@ -120,6 +138,13 @@ class Word:
         )
 
     def to_dict(self):
+        &#34;&#34;&#34;
+        Converts the word to a dictionary.
+        Returns
+        -------
+        dict
+            The dictionary representation of the word.
+        &#34;&#34;&#34;
         return {
             &#34;representation&#34;: self.representation,
             &#34;surface&#34;: self.surface,
@@ -156,6 +181,19 @@ class Word:
 
     @staticmethod
     def from_node(node: UnidicNode) -&gt; &#34;Word&#34;:
+        &#34;&#34;&#34;
+        Creates a Word from a UnidicNode.
+        Parameters
+        ----------
+        node : UnidicNode
+            The node to create the word from.
+
+        Returns
+        -------
+        Word
+            The created word.
+
+        &#34;&#34;&#34;
         return Word(
             representation=word_rep(node),
             surface=node.surface,
@@ -164,6 +202,13 @@ class Word:
         )
 
     def to_dict(self):
+        &#34;&#34;&#34;
+        Converts the word to a dictionary.
+        Returns
+        -------
+        dict
+            The dictionary representation of the word.
+        &#34;&#34;&#34;
         return {
             &#34;representation&#34;: self.representation,
             &#34;surface&#34;: self.surface,
@@ -196,13 +241,37 @@ class Word:
 <span>def <span class="ident">from_node</span></span>(<span>node: fugashi.fugashi.UnidicNode) ‑> <a title="jpfreq.word.Word" href="#jpfreq.word.Word">Word</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Creates a Word from a UnidicNode.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>node</code></strong> :&ensp;<code>UnidicNode</code></dt>
+<dd>The node to create the word from.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="jpfreq.word.Word" href="#jpfreq.word.Word">Word</a></code></dt>
+<dd>The created word.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
 def from_node(node: UnidicNode) -&gt; &#34;Word&#34;:
+    &#34;&#34;&#34;
+    Creates a Word from a UnidicNode.
+    Parameters
+    ----------
+    node : UnidicNode
+        The node to create the word from.
+
+    Returns
+    -------
+    Word
+        The created word.
+
+    &#34;&#34;&#34;
     return Word(
         representation=word_rep(node),
         surface=node.surface,
@@ -218,12 +287,25 @@ def from_node(node: UnidicNode) -&gt; &#34;Word&#34;:
 <span>def <span class="ident">to_dict</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Converts the word to a dictionary.
+Returns</p>
+<hr>
+<dl>
+<dt><code>dict</code></dt>
+<dd>The dictionary representation of the word.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def to_dict(self):
+    &#34;&#34;&#34;
+    Converts the word to a dictionary.
+    Returns
+    -------
+    dict
+        The dictionary representation of the word.
+    &#34;&#34;&#34;
     return {
         &#34;representation&#34;: self.representation,
         &#34;surface&#34;: self.surface,
@@ -517,7 +599,9 @@ def from_node(node: UnidicNode) -&gt; &#34;Word&#34;:
 <nav id="sidebar">
 <h1>Index</h1>
 <div class="toc">
-<ul></ul>
+<ul>
+<li><a href="#word">Word</a></li>
+</ul>
 </div>
 <ul id="index">
 <li><h3>Super-module</h3>
