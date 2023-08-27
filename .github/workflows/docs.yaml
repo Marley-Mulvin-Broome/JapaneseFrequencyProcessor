@@ -24,6 +24,8 @@ jobs:
 
       # ADJUST THIS: install all dependencies (including pdoc)
       - run: pip install -r dev_requirements.txt
+      # Remove docs contents from previous builds.
+      - run: rm -rf docs/*
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
       - run: pdoc --html --force --config show_source_code=False -o docs/ src/jpfreq
