@@ -24,10 +24,9 @@ jobs:
 
       # ADJUST THIS: install all dependencies (including pdoc)
       - run: pip install -r dev_requirements.txt
-      - run: pip install pdoc
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: pdoc --docformat numpy -o docs/ src/jpfreq
+      - run: pdoc --html --force --config show_source_code=False --docformat numpy -o docs/ src/jpfreq
 
       - uses: actions/upload-pages-artifact@v2
         with:
