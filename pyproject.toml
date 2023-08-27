@@ -22,7 +22,7 @@ classifiers = [  # Optional
 
   # Indicate who your project is intended for
   "Intended Audience :: Developers",
-  "Topic :: Software Development :: Build Tools",
+  "Topic :: Natural Language :: Japanese",
 
   # Pick your license as you wish
   "License :: OSI Approved :: MIT License",
@@ -42,7 +42,7 @@ dependencies = [ # Optional
 ]
 
 [project.optional-dependencies]
-dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff"]
+dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff", "pdoc3"]
 
 # List URLs that are relevant to your project
 #
@@ -57,6 +57,7 @@ dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff
 [project.urls]  # Optional
 "Homepage" = "https://github.com/Marley-Mulvin-Broome/JapaneseFrequencyProcessor"
 "Source" = "https://github.com/Marley-Mulvin-Broome/JapaneseFrequencyProcessor"
+"Documentation" = "https://marley-mulvin-broome.github.io/JapaneseFrequencyProcessor"
 
 # The following would provide a command line executable called `sample`
 # which executes the function `main` from this package when invoked.
@@ -71,8 +72,8 @@ dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff
 # package-data = {"sample" = ["*.dat"]}
 
 [build-system]
-requires = ["setup>=42"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 ######### Tool configs #########
 
