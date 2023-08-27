@@ -42,7 +42,7 @@ dependencies = [ # Optional
 ]
 
 [project.optional-dependencies]
-dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff", "pdoc3"]
+dev = ["fugashi[unidic]", "black", "pytest", "pytest-cov", "pytest-xdist", "ruff", "pdoc3", "build"]
 
 # List URLs that are relevant to your project
 #
