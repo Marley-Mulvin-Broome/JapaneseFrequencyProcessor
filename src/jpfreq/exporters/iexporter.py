@@ -1,3 +1,7 @@
+"""
+.. include:: ../../../documentation/exporters/iexporter.md
+"""
+
 import abc
 from typing import Generator
 

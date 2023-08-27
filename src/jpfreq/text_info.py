@@ -1,3 +1,7 @@
+"""
+.. include:: ../../documentation/text_info.md
+"""
+
 from dataclasses import dataclass
 
 

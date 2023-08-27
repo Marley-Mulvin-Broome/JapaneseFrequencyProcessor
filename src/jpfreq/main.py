@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+"""
+.. include:: ../../documentation/main.md
+"""
 
 from .jp_frequency_list import JapaneseFrequencyList
 from .exporters.iexporter import IExporter
