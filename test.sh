@@ -9,14 +9,16 @@ open_report=false
 generate_report=false
 report=""
 save_report=false
+exit_first=""
 
-while getopts "r:c:hogs" opt; do
+while getopts "r:c:hogsx" opt; do
   case $opt in
     h)
         echo "Usage: [-ogs] test.sh [-r <required coverage>] [-c <coverage report type>]"
         echo "-o opens the coverage report in a browser after running tests. Requires -g"
         echo "-g generates a coverage report"
         echo "-s saves test coverage report to 'pytest-coverage.txt and pytest.xml"
+        echo "-x exits on first failure"
         exit 0
         ;;
     r)
@@ -33,6 +35,9 @@ while getopts "r:c:hogs" opt; do
       ;;
     s)
       save_report=true
+      ;;
+    x)
+      exit_first="-x"
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -55,7 +60,7 @@ exit_code=0
 
 # runs coverage with a html report
 # fails if cov < required_coverage
-result=$(pytest -n auto $report tests/)
+result=$(pytest -n auto "$exit_first"  $report tests/)
 exit_code=$? 
 
 if [ "$save_report" = true ] ; then

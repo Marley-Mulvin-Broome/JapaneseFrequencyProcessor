@@ -8,9 +8,21 @@ from typing import Iterable
 from .word import Word
 
 
-@dataclass
+@dataclass(init=False)
 class WordSlot:
     words: list[Word]
+
+    def __init__(self, words: Iterable[Word]):
+        """
+        Creates a WordSlot from a list of words.
+        Parameters
+        ----------
+        words : Iterable[Word]
+            The words to create the word slot from.
+        """
+        self.words = []
+
+        [self.add_word(word) for word in words]
 
     def __contains__(self, item: [Word | str]):
         """
@@ -33,6 +45,8 @@ class WordSlot:
 
         if isinstance(item, str):
             return item in [word.surface for word in self.words]
+
+        return False
 
     def __len__(self):
         """
@@ -104,7 +118,7 @@ class WordSlot:
         """
         for old_word in self.words:
             if old_word.surface == word.surface:
-                old_word.frequency += 1
+                old_word.frequency += word.frequency
                 return
 
         self.words.append(word)
