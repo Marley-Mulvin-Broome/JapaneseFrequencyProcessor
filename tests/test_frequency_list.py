@@ -502,3 +502,14 @@ def test_get_representation(word, expected, freq_list):
 def test_get_representation_invalid(freq_list):
     with pytest.raises(ValueError):
         freq_list.get_representation("")
+
+
+def test_process_big_text(freq_list):
+    from os.path import dirname, abspath, join
+
+    file_path = dirname(abspath(__file__))
+    freq_list.process_file(join(file_path, "bigtext1.txt"))
+
+    assert "警報" in freq_list
+    assert "鬼" in freq_list
+    assert "先" in freq_list

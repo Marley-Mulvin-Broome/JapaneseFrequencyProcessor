@@ -17,6 +17,7 @@ class WordType(Enum):
 
     # NOUNS
     NOUN: str = "名詞"
+    NOUN_LIKE: str = "名詞的"
     COMMON_NOUN: str = "普通名詞"
     PRONOUN: str = "代名詞"
     PROPER_NOUN: str = "固有名詞"
@@ -47,7 +48,11 @@ class WordType(Enum):
 
     # ADJECTIVES
     NA_ADJECTIVE: str = "形状詞"  # Adjectival Noun
+    NA_ADJECTIVE_LIKE: str = "形状詞的"
+    POTENTIAL_NA_ADJECTIVE: str = "形状詞可能"
     I_ADJECTIVE: str = "形容詞"
+    I_ADJECTIVE_LIKE: str = "形容詞的"
+    POTENTIAL_I_ADJECTIVE: str = "形容詞可能"
 
     # NUMBERS
     NUMERAL: str = "数詞"
@@ -77,6 +82,7 @@ class WordType(Enum):
     BLANK_SPACE: str = "空白"
     UNINDEPENDENT: str = "非自立可能"
     ADNOMINAL: str = "連体詞"
+    CONJUNCTION: str = "接続詞"
 
 
 @dataclass()
