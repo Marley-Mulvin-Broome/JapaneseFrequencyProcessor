@@ -67,24 +67,31 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
         &#34;&#34;&#34;
         Exports the frequency list to JSON.
         Parameters
         ----------
         frequency_list : JapaneseFrequencyList
             The frequency list to export
-        limit
+        limit : int
             The MAX number of words to export
-        combine
+        combine : bool
             Whether to combine the word slots or not
+        as_dict : bool
+            Whether to return the dictionary or the JSON string
 
         Returns
         -------
         str
             The JSON string
         &#34;&#34;&#34;
-        return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
+        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+
+        if as_dict:
+            return result
+
+        return dumps(result, ensure_ascii=False, indent=4)
     
     def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
         return super().export_lazy(frequency_list, limit)</code></pre>
@@ -138,24 +145,31 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
         &#34;&#34;&#34;
         Exports the frequency list to JSON.
         Parameters
         ----------
         frequency_list : JapaneseFrequencyList
             The frequency list to export
-        limit
+        limit : int
             The MAX number of words to export
-        combine
+        combine : bool
             Whether to combine the word slots or not
+        as_dict : bool
+            Whether to return the dictionary or the JSON string
 
         Returns
         -------
         str
             The JSON string
         &#34;&#34;&#34;
-        return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
+        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+
+        if as_dict:
+            return result
+
+        return dumps(result, ensure_ascii=False, indent=4)
     
     def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
         return super().export_lazy(frequency_list, limit)</code></pre>
@@ -167,7 +181,7 @@ class JsonExporter(IExporter):
 <h3>Methods</h3>
 <dl>
 <dt id="jpfreq.exporters.json.JsonExporter.export"><code class="name flex">
-<span>def <span class="ident">export</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False) ‑> str</span>
+<span>def <span class="ident">export</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False, as_dict: bool = False) ‑> [str | dict]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Exports the frequency list to JSON.
@@ -176,10 +190,12 @@ Parameters</p>
 <dl>
 <dt><strong><code>frequency_list</code></strong> :&ensp;<code>JapaneseFrequencyList</code></dt>
 <dd>The frequency list to export</dd>
-<dt><strong><code>limit</code></strong></dt>
+<dt><strong><code>limit</code></strong> :&ensp;<code>int</code></dt>
 <dd>The MAX number of words to export</dd>
-<dt><strong><code>combine</code></strong></dt>
+<dt><strong><code>combine</code></strong> :&ensp;<code>bool</code></dt>
 <dd>Whether to combine the word slots or not</dd>
+<dt><strong><code>as_dict</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to return the dictionary or the JSON string</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -190,24 +206,31 @@ Parameters</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; str:
+<pre><code class="python">def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
     &#34;&#34;&#34;
     Exports the frequency list to JSON.
     Parameters
     ----------
     frequency_list : JapaneseFrequencyList
         The frequency list to export
-    limit
+    limit : int
         The MAX number of words to export
-    combine
+    combine : bool
         Whether to combine the word slots or not
+    as_dict : bool
+        Whether to return the dictionary or the JSON string
 
     Returns
     -------
     str
         The JSON string
     &#34;&#34;&#34;
-    return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)</code></pre>
+    result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+
+    if as_dict:
+        return result
+
+    return dumps(result, ensure_ascii=False, indent=4)</code></pre>
 </details>
 </dd>
 <dt id="jpfreq.exporters.json.JsonExporter.export_lazy"><code class="name flex">

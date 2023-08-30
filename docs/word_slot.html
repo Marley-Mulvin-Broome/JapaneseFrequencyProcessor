@@ -37,9 +37,21 @@ from typing import Iterable
 from .word import Word
 
 
-@dataclass
+@dataclass(init=False)
 class WordSlot:
     words: list[Word]
+
+    def __init__(self, words: Iterable[Word]):
+        &#34;&#34;&#34;
+        Creates a WordSlot from a list of words.
+        Parameters
+        ----------
+        words : Iterable[Word]
+            The words to create the word slot from.
+        &#34;&#34;&#34;
+        self.words = []
+
+        [self.add_word(word) for word in words]
 
     def __contains__(self, item: [Word | str]):
         &#34;&#34;&#34;
@@ -62,6 +74,8 @@ class WordSlot:
 
         if isinstance(item, str):
             return item in [word.surface for word in self.words]
+
+        return False
 
     def __len__(self):
         &#34;&#34;&#34;
@@ -133,7 +147,7 @@ class WordSlot:
         &#34;&#34;&#34;
         for old_word in self.words:
             if old_word.surface == word.surface:
-                old_word.frequency += 1
+                old_word.frequency += word.frequency
                 return
 
         self.words.append(word)
@@ -205,17 +219,36 @@ Parameters</p>
 <dl>
 <dt id="jpfreq.word_slot.WordSlot"><code class="flex name class">
 <span>class <span class="ident">WordSlot</span></span>
-<span>(</span><span>words: list[<a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>])</span>
+<span>(</span><span>words: Iterable[<a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>WordSlot(words: list[jpfreq.word.Word])</p></div>
+<div class="desc"><p>WordSlot(words: Iterable[jpfreq.word.Word])</p>
+<p>Creates a WordSlot from a list of words.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>words</code></strong> :&ensp;<code>Iterable[Word]</code></dt>
+<dd>The words to create the word slot from.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@dataclass
+<pre><code class="python">@dataclass(init=False)
 class WordSlot:
     words: list[Word]
+
+    def __init__(self, words: Iterable[Word]):
+        &#34;&#34;&#34;
+        Creates a WordSlot from a list of words.
+        Parameters
+        ----------
+        words : Iterable[Word]
+            The words to create the word slot from.
+        &#34;&#34;&#34;
+        self.words = []
+
+        [self.add_word(word) for word in words]
 
     def __contains__(self, item: [Word | str]):
         &#34;&#34;&#34;
@@ -238,6 +271,8 @@ class WordSlot:
 
         if isinstance(item, str):
             return item in [word.surface for word in self.words]
+
+        return False
 
     def __len__(self):
         &#34;&#34;&#34;
@@ -309,7 +344,7 @@ class WordSlot:
         &#34;&#34;&#34;
         for old_word in self.words:
             if old_word.surface == word.surface:
-                old_word.frequency += 1
+                old_word.frequency += word.frequency
                 return
 
         self.words.append(word)</code></pre>
@@ -379,7 +414,7 @@ Parameters</p>
     &#34;&#34;&#34;
     for old_word in self.words:
         if old_word.surface == word.surface:
-            old_word.frequency += 1
+            old_word.frequency += word.frequency
             return
 
     self.words.append(word)</code></pre>
