@@ -39,24 +39,31 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> str:
+    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -> [str|dict]:
         """
         Exports the frequency list to JSON.
         Parameters
         ----------
         frequency_list : JapaneseFrequencyList
             The frequency list to export
-        limit
+        limit : int
             The MAX number of words to export
-        combine
+        combine : bool
             Whether to combine the word slots or not
+        as_dict : bool
+            Whether to return the dictionary or the JSON string
 
         Returns
         -------
         str
             The JSON string
         """
-        return dumps(self._create_export_dictionary(frequency_list, limit=limit), ensure_ascii=False, indent=4)
+        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+
+        if as_dict:
+            return result
+
+        return dumps(result, ensure_ascii=False, indent=4)
     
     def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> Generator[str, None, None]:
         return super().export_lazy(frequency_list, limit)
