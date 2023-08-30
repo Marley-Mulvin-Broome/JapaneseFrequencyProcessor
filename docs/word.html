@@ -46,6 +46,7 @@ class WordType(Enum):
 
     # NOUNS
     NOUN: str = &#34;名詞&#34;
+    NOUN_LIKE: str = &#34;名詞的&#34;
     COMMON_NOUN: str = &#34;普通名詞&#34;
     PRONOUN: str = &#34;代名詞&#34;
     PROPER_NOUN: str = &#34;固有名詞&#34;
@@ -76,7 +77,11 @@ class WordType(Enum):
 
     # ADJECTIVES
     NA_ADJECTIVE: str = &#34;形状詞&#34;  # Adjectival Noun
+    NA_ADJECTIVE_LIKE: str = &#34;形状詞的&#34;
+    POTENTIAL_NA_ADJECTIVE: str = &#34;形状詞可能&#34;
     I_ADJECTIVE: str = &#34;形容詞&#34;
+    I_ADJECTIVE_LIKE: str = &#34;形容詞的&#34;
+    POTENTIAL_I_ADJECTIVE: str = &#34;形容詞可能&#34;
 
     # NUMBERS
     NUMERAL: str = &#34;数詞&#34;
@@ -106,6 +111,7 @@ class WordType(Enum):
     BLANK_SPACE: str = &#34;空白&#34;
     UNINDEPENDENT: str = &#34;非自立可能&#34;
     ADNOMINAL: str = &#34;連体詞&#34;
+    CONJUNCTION: str = &#34;接続詞&#34;
 
 
 @dataclass()
@@ -336,6 +342,7 @@ Returns</p>
 
     # NOUNS
     NOUN: str = &#34;名詞&#34;
+    NOUN_LIKE: str = &#34;名詞的&#34;
     COMMON_NOUN: str = &#34;普通名詞&#34;
     PRONOUN: str = &#34;代名詞&#34;
     PROPER_NOUN: str = &#34;固有名詞&#34;
@@ -366,7 +373,11 @@ Returns</p>
 
     # ADJECTIVES
     NA_ADJECTIVE: str = &#34;形状詞&#34;  # Adjectival Noun
+    NA_ADJECTIVE_LIKE: str = &#34;形状詞的&#34;
+    POTENTIAL_NA_ADJECTIVE: str = &#34;形状詞可能&#34;
     I_ADJECTIVE: str = &#34;形容詞&#34;
+    I_ADJECTIVE_LIKE: str = &#34;形容詞的&#34;
+    POTENTIAL_I_ADJECTIVE: str = &#34;形容詞可能&#34;
 
     # NUMBERS
     NUMERAL: str = &#34;数詞&#34;
@@ -395,7 +406,8 @@ Returns</p>
     INTERJECTION: str = &#34;感動詞&#34;
     BLANK_SPACE: str = &#34;空白&#34;
     UNINDEPENDENT: str = &#34;非自立可能&#34;
-    ADNOMINAL: str = &#34;連体詞&#34;</code></pre>
+    ADNOMINAL: str = &#34;連体詞&#34;
+    CONJUNCTION: str = &#34;接続詞&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -463,6 +475,10 @@ Returns</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="jpfreq.word.WordType.CONJUNCTION"><code class="name">var <span class="ident">CONJUNCTION</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="jpfreq.word.WordType.CONJUNCTIVE_PARTICLE"><code class="name">var <span class="ident">CONJUNCTIVE_PARTICLE</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
@@ -503,7 +519,15 @@ Returns</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="jpfreq.word.WordType.I_ADJECTIVE_LIKE"><code class="name">var <span class="ident">I_ADJECTIVE_LIKE</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="jpfreq.word.WordType.NA_ADJECTIVE"><code class="name">var <span class="ident">NA_ADJECTIVE</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="jpfreq.word.WordType.NA_ADJECTIVE_LIKE"><code class="name">var <span class="ident">NA_ADJECTIVE_LIKE</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -512,6 +536,10 @@ Returns</p>
 <div class="desc"></div>
 </dd>
 <dt id="jpfreq.word.WordType.NOUN"><code class="name">var <span class="ident">NOUN</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="jpfreq.word.WordType.NOUN_LIKE"><code class="name">var <span class="ident">NOUN_LIKE</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -536,6 +564,14 @@ Returns</p>
 <div class="desc"></div>
 </dd>
 <dt id="jpfreq.word.WordType.POSSIBLE_COUNTER"><code class="name">var <span class="ident">POSSIBLE_COUNTER</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="jpfreq.word.WordType.POTENTIAL_I_ADJECTIVE"><code class="name">var <span class="ident">POTENTIAL_I_ADJECTIVE</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="jpfreq.word.WordType.POTENTIAL_NA_ADJECTIVE"><code class="name">var <span class="ident">POTENTIAL_NA_ADJECTIVE</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -640,6 +676,7 @@ Returns</p>
 <li><code><a title="jpfreq.word.WordType.CHARACTER" href="#jpfreq.word.WordType.CHARACTER">CHARACTER</a></code></li>
 <li><code><a title="jpfreq.word.WordType.COMMA" href="#jpfreq.word.WordType.COMMA">COMMA</a></code></li>
 <li><code><a title="jpfreq.word.WordType.COMMON_NOUN" href="#jpfreq.word.WordType.COMMON_NOUN">COMMON_NOUN</a></code></li>
+<li><code><a title="jpfreq.word.WordType.CONJUNCTION" href="#jpfreq.word.WordType.CONJUNCTION">CONJUNCTION</a></code></li>
 <li><code><a title="jpfreq.word.WordType.CONJUNCTIVE_PARTICLE" href="#jpfreq.word.WordType.CONJUNCTIVE_PARTICLE">CONJUNCTIVE_PARTICLE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.COUNTER" href="#jpfreq.word.WordType.COUNTER">COUNTER</a></code></li>
 <li><code><a title="jpfreq.word.WordType.COUNTRY" href="#jpfreq.word.WordType.COUNTRY">COUNTRY</a></code></li>
@@ -650,15 +687,20 @@ Returns</p>
 <li><code><a title="jpfreq.word.WordType.GENERAL" href="#jpfreq.word.WordType.GENERAL">GENERAL</a></code></li>
 <li><code><a title="jpfreq.word.WordType.INTERJECTION" href="#jpfreq.word.WordType.INTERJECTION">INTERJECTION</a></code></li>
 <li><code><a title="jpfreq.word.WordType.I_ADJECTIVE" href="#jpfreq.word.WordType.I_ADJECTIVE">I_ADJECTIVE</a></code></li>
+<li><code><a title="jpfreq.word.WordType.I_ADJECTIVE_LIKE" href="#jpfreq.word.WordType.I_ADJECTIVE_LIKE">I_ADJECTIVE_LIKE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NA_ADJECTIVE" href="#jpfreq.word.WordType.NA_ADJECTIVE">NA_ADJECTIVE</a></code></li>
+<li><code><a title="jpfreq.word.WordType.NA_ADJECTIVE_LIKE" href="#jpfreq.word.WordType.NA_ADJECTIVE_LIKE">NA_ADJECTIVE_LIKE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NOMINAL_PARTICLE" href="#jpfreq.word.WordType.NOMINAL_PARTICLE">NOMINAL_PARTICLE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NOUN" href="#jpfreq.word.WordType.NOUN">NOUN</a></code></li>
+<li><code><a title="jpfreq.word.WordType.NOUN_LIKE" href="#jpfreq.word.WordType.NOUN_LIKE">NOUN_LIKE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NUMERAL" href="#jpfreq.word.WordType.NUMERAL">NUMERAL</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PARTICLE" href="#jpfreq.word.WordType.PARTICLE">PARTICLE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PERIOD" href="#jpfreq.word.WordType.PERIOD">PERIOD</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PHRASE_FINAL_PARTICLE" href="#jpfreq.word.WordType.PHRASE_FINAL_PARTICLE">PHRASE_FINAL_PARTICLE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PLACE_NAME" href="#jpfreq.word.WordType.PLACE_NAME">PLACE_NAME</a></code></li>
 <li><code><a title="jpfreq.word.WordType.POSSIBLE_COUNTER" href="#jpfreq.word.WordType.POSSIBLE_COUNTER">POSSIBLE_COUNTER</a></code></li>
+<li><code><a title="jpfreq.word.WordType.POTENTIAL_I_ADJECTIVE" href="#jpfreq.word.WordType.POTENTIAL_I_ADJECTIVE">POTENTIAL_I_ADJECTIVE</a></code></li>
+<li><code><a title="jpfreq.word.WordType.POTENTIAL_NA_ADJECTIVE" href="#jpfreq.word.WordType.POTENTIAL_NA_ADJECTIVE">POTENTIAL_NA_ADJECTIVE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PREFIX" href="#jpfreq.word.WordType.PREFIX">PREFIX</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PRONOUN" href="#jpfreq.word.WordType.PRONOUN">PRONOUN</a></code></li>
 <li><code><a title="jpfreq.word.WordType.PROPER_NOUN" href="#jpfreq.word.WordType.PROPER_NOUN">PROPER_NOUN</a></code></li>
