@@ -22,7 +22,8 @@ class WordType(Enum):
     PRONOUN: str = "代名詞"
     PROPER_NOUN: str = "固有名詞"
     AUXILIARY_NOUN: str = "助動詞語幹"
-    FIRST_NAME: str = "人名"
+    NAME: str = "人名"
+    FIRST_NAME: str = "名"
     FAMILY_NAME: str = "姓"
     PLACE_NAME: str = "地名"
     COUNTRY: str = "国"
@@ -83,6 +84,7 @@ class WordType(Enum):
     UNINDEPENDENT: str = "非自立可能"
     ADNOMINAL: str = "連体詞"
     CONJUNCTION: str = "接続詞"
+    UNKNOWN: str = ""
 
 
 @dataclass()
