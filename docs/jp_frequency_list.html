@@ -42,16 +42,10 @@ from .kanji import all_kanji_in_string, Kanji
 from .util import percent_of
 from .word import Word, WordType
 
-EXCLUDED_WORD_TYPES: list[WordType] = [
-    WordType.PARTICLE,
-    WordType.AUXILIARY_VERB,
-    WordType.SUPPLEMENTARY_SYMBOL,
-    WordType.BLANK_SPACE,
-    WordType.NUMERAL,
-]
 
-
-def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -&gt; bool:
+def word_validator_exclude_by_type(
+    input_word: Word, excluded_word_types: list[WordType]
+) -&gt; bool:
     &#34;&#34;&#34;
     Validates a word by excluding it if it is of a certain type lists in `excluded_word_types`.
 
@@ -67,8 +61,6 @@ def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -
     bool
         Whether the word is valid or not.
     &#34;&#34;&#34;
-    if excluded_word_types is None:
-        excluded_word_types = EXCLUDED_WORD_TYPES
     for word_type in input_word.types:
         if word_type in excluded_word_types:
             return False
@@ -86,18 +78,29 @@ class JapaneseFrequencyList:
     _word_count: int
     _tagger: Tagger
     _word_validator: Callable[[Word], bool]
+    compare_surface: bool
+    excluded_word_types: list[WordType] = [
+        WordType.PARTICLE,
+        WordType.AUXILIARY_VERB,
+        WordType.SUPPLEMENTARY_SYMBOL,
+        WordType.BLANK_SPACE,
+        WordType.NUMERAL,
+    ]
 
     def __init__(
         self,
-        word_validator: Callable[[Word], bool] = word_validator_exclude_by_type,
         text_to_analyse: list = None,
         tagger_instance=None,
+        compare_surface: bool = False,
+        excluded_word_types: list[WordType] = None,
     ):
         self._unique_words = {}
         self._unique_kanji = {}
         self._word_count = 0
+        self.compare_surface = compare_surface
 
-        self._word_validator = word_validator
+        if excluded_word_types is not None:
+            self.excluded_word_types = excluded_word_types
 
         self._tagger = tagger_instance
         if not self._tagger:
@@ -133,6 +136,8 @@ class JapaneseFrequencyList:
     def __contains__(self, word: str) -&gt; bool:
         &#34;&#34;&#34;
         Whether the representation of a word is in the frequency list.
+
+        This will compare against surfaces only if `compare_surface` is True.
         Parameters
         ----------
         word : str
@@ -143,7 +148,12 @@ class JapaneseFrequencyList:
         bool
             Whether the word is in the frequency list.
         &#34;&#34;&#34;
-        return word in self._unique_words.keys()
+        contains = word in self._unique_words
+
+        if self.compare_surface and not contains:
+            contains = any(word in word_slot for word_slot in self.wordslots)
+
+        return contains
 
     def __getitem__(self, word: str) -&gt; WordSlot:
         &#34;&#34;&#34;
@@ -340,6 +350,22 @@ class JapaneseFrequencyList:
 
         self._unique_kanji[kanji.representation] = kanji
 
+    def validate_word(self, word: Word) -&gt; bool:
+        &#34;&#34;&#34;
+        Validates a word, checking if it should be excluded or not.
+
+        This currently checks if the word is in the list of excluded types and removes it if it is.
+        Parameters
+        ----------
+        word : Word
+            The word to validate.
+        Returns
+        -------
+        bool
+            Whether the word is valid or not.
+        &#34;&#34;&#34;
+        return word_validator_exclude_by_type(word, self.excluded_word_types)
+
     def add_word(self, word: Word) -&gt; None:
         &#34;&#34;&#34;
         Adds a word to the frequency list.
@@ -414,11 +440,11 @@ class JapaneseFrequencyList:
         line_to_process : str
             The line to process.
         &#34;&#34;&#34;
-        line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;)
+        line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;).strip()
         words, kanji = self.parse_line(line_to_process)
 
         [self.add_kanji(kanji) for kanji in kanji]
-        [self.add_word(word) for word in words if self._word_validator(word)]
+        [self.add_word(word) for word in words if self.validate_word(word)]
 
     def process_text(self, text_to_process: str) -&gt; None:
         &#34;&#34;&#34;
@@ -467,7 +493,7 @@ class JapaneseFrequencyList:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="jpfreq.jp_frequency_list.word_validator_exclude_by_type"><code class="name flex">
-<span>def <span class="ident">word_validator_exclude_by_type</span></span>(<span>input_word: <a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>, excluded_word_types=None) ‑> bool</span>
+<span>def <span class="ident">word_validator_exclude_by_type</span></span>(<span>input_word: <a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>, excluded_word_types: list[<a title="jpfreq.word.WordType" href="word.html#jpfreq.word.WordType">WordType</a>]) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Validates a word by excluding it if it is of a certain type lists in <code>excluded_word_types</code>.</p>
@@ -487,7 +513,9 @@ class JapaneseFrequencyList:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -&gt; bool:
+<pre><code class="python">def word_validator_exclude_by_type(
+    input_word: Word, excluded_word_types: list[WordType]
+) -&gt; bool:
     &#34;&#34;&#34;
     Validates a word by excluding it if it is of a certain type lists in `excluded_word_types`.
 
@@ -503,8 +531,6 @@ class JapaneseFrequencyList:
     bool
         Whether the word is valid or not.
     &#34;&#34;&#34;
-    if excluded_word_types is None:
-        excluded_word_types = EXCLUDED_WORD_TYPES
     for word_type in input_word.types:
         if word_type in excluded_word_types:
             return False
@@ -519,7 +545,7 @@ class JapaneseFrequencyList:
 <dl>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList"><code class="flex name class">
 <span>class <span class="ident">JapaneseFrequencyList</span></span>
-<span>(</span><span>word_validator: Callable[[<a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>], bool] = &lt;function word_validator_exclude_by_type&gt;, text_to_analyse: list = None, tagger_instance=None)</span>
+<span>(</span><span>text_to_analyse: list = None, tagger_instance=None, compare_surface: bool = False, excluded_word_types: list[<a title="jpfreq.word.WordType" href="word.html#jpfreq.word.WordType">WordType</a>] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A class for storing the frequency of words in a Japanese text.</p></div>
@@ -537,18 +563,29 @@ class JapaneseFrequencyList:
     _word_count: int
     _tagger: Tagger
     _word_validator: Callable[[Word], bool]
+    compare_surface: bool
+    excluded_word_types: list[WordType] = [
+        WordType.PARTICLE,
+        WordType.AUXILIARY_VERB,
+        WordType.SUPPLEMENTARY_SYMBOL,
+        WordType.BLANK_SPACE,
+        WordType.NUMERAL,
+    ]
 
     def __init__(
         self,
-        word_validator: Callable[[Word], bool] = word_validator_exclude_by_type,
         text_to_analyse: list = None,
         tagger_instance=None,
+        compare_surface: bool = False,
+        excluded_word_types: list[WordType] = None,
     ):
         self._unique_words = {}
         self._unique_kanji = {}
         self._word_count = 0
+        self.compare_surface = compare_surface
 
-        self._word_validator = word_validator
+        if excluded_word_types is not None:
+            self.excluded_word_types = excluded_word_types
 
         self._tagger = tagger_instance
         if not self._tagger:
@@ -584,6 +621,8 @@ class JapaneseFrequencyList:
     def __contains__(self, word: str) -&gt; bool:
         &#34;&#34;&#34;
         Whether the representation of a word is in the frequency list.
+
+        This will compare against surfaces only if `compare_surface` is True.
         Parameters
         ----------
         word : str
@@ -594,7 +633,12 @@ class JapaneseFrequencyList:
         bool
             Whether the word is in the frequency list.
         &#34;&#34;&#34;
-        return word in self._unique_words.keys()
+        contains = word in self._unique_words
+
+        if self.compare_surface and not contains:
+            contains = any(word in word_slot for word_slot in self.wordslots)
+
+        return contains
 
     def __getitem__(self, word: str) -&gt; WordSlot:
         &#34;&#34;&#34;
@@ -791,6 +835,22 @@ class JapaneseFrequencyList:
 
         self._unique_kanji[kanji.representation] = kanji
 
+    def validate_word(self, word: Word) -&gt; bool:
+        &#34;&#34;&#34;
+        Validates a word, checking if it should be excluded or not.
+
+        This currently checks if the word is in the list of excluded types and removes it if it is.
+        Parameters
+        ----------
+        word : Word
+            The word to validate.
+        Returns
+        -------
+        bool
+            Whether the word is valid or not.
+        &#34;&#34;&#34;
+        return word_validator_exclude_by_type(word, self.excluded_word_types)
+
     def add_word(self, word: Word) -&gt; None:
         &#34;&#34;&#34;
         Adds a word to the frequency list.
@@ -865,11 +925,11 @@ class JapaneseFrequencyList:
         line_to_process : str
             The line to process.
         &#34;&#34;&#34;
-        line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;)
+        line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;).strip()
         words, kanji = self.parse_line(line_to_process)
 
         [self.add_kanji(kanji) for kanji in kanji]
-        [self.add_word(word) for word in words if self._word_validator(word)]
+        [self.add_word(word) for word in words if self.validate_word(word)]
 
     def process_text(self, text_to_process: str) -&gt; None:
         &#34;&#34;&#34;
@@ -909,6 +969,17 @@ class JapaneseFrequencyList:
         with open(file_path, &#34;r&#34;, encoding=&#34;utf-8&#34;) as fs:
             [self.process_line(line) for line in fs]</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.compare_surface"><code class="name">var <span class="ident">compare_surface</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.excluded_word_types"><code class="name">var <span class="ident">excluded_word_types</span> : list[<a title="jpfreq.word.WordType" href="word.html#jpfreq.word.WordType">WordType</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_kanji"><code class="name">var <span class="ident">unique_kanji</span> : int</code></dt>
@@ -1450,11 +1521,11 @@ All other processing functions boil down to this.</p>
     line_to_process : str
         The line to process.
     &#34;&#34;&#34;
-    line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;)
+    line_to_process = line_to_process.replace(&#34;\n&#34;, &#34;&#34;).strip()
     words, kanji = self.parse_line(line_to_process)
 
     [self.add_kanji(kanji) for kanji in kanji]
-    [self.add_word(word) for word in words if self._word_validator(word)]</code></pre>
+    [self.add_word(word) for word in words if self.validate_word(word)]</code></pre>
 </details>
 </dd>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.process_text"><code class="name flex">
@@ -1509,6 +1580,44 @@ All other processing functions boil down to this.</p>
     [self.process_text(text) for text in texts_to_process]</code></pre>
 </details>
 </dd>
+<dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.validate_word"><code class="name flex">
+<span>def <span class="ident">validate_word</span></span>(<span>self, word: <a title="jpfreq.word.Word" href="word.html#jpfreq.word.Word">Word</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validates a word, checking if it should be excluded or not.</p>
+<p>This currently checks if the word is in the list of excluded types and removes it if it is.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>word</code></strong> :&ensp;<code>Word</code></dt>
+<dd>The word to validate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Whether the word is valid or not.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_word(self, word: Word) -&gt; bool:
+    &#34;&#34;&#34;
+    Validates a word, checking if it should be excluded or not.
+
+    This currently checks if the word is in the list of excluded types and removes it if it is.
+    Parameters
+    ----------
+    word : Word
+        The word to validate.
+    Returns
+    -------
+    bool
+        Whether the word is valid or not.
+    &#34;&#34;&#34;
+    return word_validator_exclude_by_type(word, self.excluded_word_types)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -1540,6 +1649,8 @@ All other processing functions boil down to this.</p>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.add_kanji" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.add_kanji">add_kanji</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.add_word" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.add_word">add_word</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.clear" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.clear">clear</a></code></li>
+<li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.compare_surface" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.compare_surface">compare_surface</a></code></li>
+<li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.excluded_word_types" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.excluded_word_types">excluded_word_types</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.generate_text_info" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.generate_text_info">generate_text_info</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.get_most_frequent" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.get_most_frequent">get_most_frequent</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.get_representation" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.get_representation">get_representation</a></code></li>
@@ -1554,6 +1665,7 @@ All other processing functions boil down to this.</p>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words">unique_words</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words_all" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words_all">unique_words_all</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words_used_once" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words_used_once">unique_words_used_once</a></code></li>
+<li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.validate_word" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.validate_word">validate_word</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.word_count" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.word_count">word_count</a></code></li>
 <li><code><a title="jpfreq.jp_frequency_list.JapaneseFrequencyList.wordslots" href="#jpfreq.jp_frequency_list.JapaneseFrequencyList.wordslots">wordslots</a></code></li>
 </ul>

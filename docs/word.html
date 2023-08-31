@@ -51,7 +51,8 @@ class WordType(Enum):
     PRONOUN: str = &#34;代名詞&#34;
     PROPER_NOUN: str = &#34;固有名詞&#34;
     AUXILIARY_NOUN: str = &#34;助動詞語幹&#34;
-    FIRST_NAME: str = &#34;人名&#34;
+    NAME: str = &#34;人名&#34;
+    FIRST_NAME: str = &#34;名&#34;
     FAMILY_NAME: str = &#34;姓&#34;
     PLACE_NAME: str = &#34;地名&#34;
     COUNTRY: str = &#34;国&#34;
@@ -112,6 +113,7 @@ class WordType(Enum):
     UNINDEPENDENT: str = &#34;非自立可能&#34;
     ADNOMINAL: str = &#34;連体詞&#34;
     CONJUNCTION: str = &#34;接続詞&#34;
+    UNKNOWN: str = &#34;&#34;
 
 
 @dataclass()
@@ -347,7 +349,8 @@ Returns</p>
     PRONOUN: str = &#34;代名詞&#34;
     PROPER_NOUN: str = &#34;固有名詞&#34;
     AUXILIARY_NOUN: str = &#34;助動詞語幹&#34;
-    FIRST_NAME: str = &#34;人名&#34;
+    NAME: str = &#34;人名&#34;
+    FIRST_NAME: str = &#34;名&#34;
     FAMILY_NAME: str = &#34;姓&#34;
     PLACE_NAME: str = &#34;地名&#34;
     COUNTRY: str = &#34;国&#34;
@@ -407,7 +410,8 @@ Returns</p>
     BLANK_SPACE: str = &#34;空白&#34;
     UNINDEPENDENT: str = &#34;非自立可能&#34;
     ADNOMINAL: str = &#34;連体詞&#34;
-    CONJUNCTION: str = &#34;接続詞&#34;</code></pre>
+    CONJUNCTION: str = &#34;接続詞&#34;
+    UNKNOWN: str = &#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -523,6 +527,10 @@ Returns</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="jpfreq.word.WordType.NAME"><code class="name">var <span class="ident">NAME</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="jpfreq.word.WordType.NA_ADJECTIVE"><code class="name">var <span class="ident">NA_ADJECTIVE</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
@@ -611,6 +619,10 @@ Returns</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="jpfreq.word.WordType.UNKNOWN"><code class="name">var <span class="ident">UNKNOWN</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="jpfreq.word.WordType.VERB"><code class="name">var <span class="ident">VERB</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
@@ -688,6 +700,7 @@ Returns</p>
 <li><code><a title="jpfreq.word.WordType.INTERJECTION" href="#jpfreq.word.WordType.INTERJECTION">INTERJECTION</a></code></li>
 <li><code><a title="jpfreq.word.WordType.I_ADJECTIVE" href="#jpfreq.word.WordType.I_ADJECTIVE">I_ADJECTIVE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.I_ADJECTIVE_LIKE" href="#jpfreq.word.WordType.I_ADJECTIVE_LIKE">I_ADJECTIVE_LIKE</a></code></li>
+<li><code><a title="jpfreq.word.WordType.NAME" href="#jpfreq.word.WordType.NAME">NAME</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NA_ADJECTIVE" href="#jpfreq.word.WordType.NA_ADJECTIVE">NA_ADJECTIVE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NA_ADJECTIVE_LIKE" href="#jpfreq.word.WordType.NA_ADJECTIVE_LIKE">NA_ADJECTIVE_LIKE</a></code></li>
 <li><code><a title="jpfreq.word.WordType.NOMINAL_PARTICLE" href="#jpfreq.word.WordType.NOMINAL_PARTICLE">NOMINAL_PARTICLE</a></code></li>
@@ -710,6 +723,7 @@ Returns</p>
 <li><code><a title="jpfreq.word.WordType.SUPPLEMENTARY_SYMBOL" href="#jpfreq.word.WordType.SUPPLEMENTARY_SYMBOL">SUPPLEMENTARY_SYMBOL</a></code></li>
 <li><code><a title="jpfreq.word.WordType.TARI" href="#jpfreq.word.WordType.TARI">TARI</a></code></li>
 <li><code><a title="jpfreq.word.WordType.UNINDEPENDENT" href="#jpfreq.word.WordType.UNINDEPENDENT">UNINDEPENDENT</a></code></li>
+<li><code><a title="jpfreq.word.WordType.UNKNOWN" href="#jpfreq.word.WordType.UNKNOWN">UNKNOWN</a></code></li>
 <li><code><a title="jpfreq.word.WordType.VERB" href="#jpfreq.word.WordType.VERB">VERB</a></code></li>
 <li><code><a title="jpfreq.word.WordType.VERBAL" href="#jpfreq.word.WordType.VERBAL">VERBAL</a></code></li>
 <li><code><a title="jpfreq.word.WordType.VERBAL_ADJECTIVAL" href="#jpfreq.word.WordType.VERBAL_ADJECTIVAL">VERBAL_ADJECTIVAL</a></code></li>
