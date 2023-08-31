@@ -1,10 +1,10 @@
 from jpfreq.jp_frequency_list import (
     JapaneseFrequencyList,
-    word_validator_exclude_by_type,
 )
 from jpfreq.text_info import TextInfo
 from jpfreq.word import WordType, Word
 from fugashi import Tagger
+from os.path import dirname, abspath, join
 
 import pytest
 
@@ -346,7 +346,7 @@ def test_file_not_found(freq_list):
 
 
 def test_freq_provided_tagger():
-    j = JapaneseFrequencyList(Tagger("-Owakati"))
+    j = JapaneseFrequencyList(tagger_instance=Tagger("-Owakati"))
 
     assert j._tagger is not None
 
@@ -378,6 +378,27 @@ def test_freq_contains_not(freq_list):
     freq_list.process_text("これはテストです")
 
     assert "これ" not in freq_list  # will be kanji representation
+
+
+def test_freq_contains_surface(freq_list):
+    freq_list.compare_surface = True
+
+    # 今井 representation becomes イマイ, but surface still kanji
+    freq_list.process_text("今井")
+
+    assert "今井" in freq_list
+    assert "イマイ" in freq_list
+
+
+def test_freq_contains_surface_not(freq_list):
+    freq_list.compare_surface = True
+
+    # 今井 representation becomes イマイ, but surface still kanji
+    freq_list.process_text("行かない")
+
+    assert "行く" in freq_list
+    assert "行か" in freq_list
+    assert "行け" not in freq_list
 
 
 def test_freq_getitem(freq_list):
@@ -473,16 +494,18 @@ word_validator_type_test_data = [
 
 
 @pytest.mark.parametrize("word,expected,excluded_types", word_validator_type_test_data)
-def test_word_validator_type(word, expected, excluded_types):
-    assert word_validator_exclude_by_type(word, excluded_types) == expected
+def test_word_validator_type(freq_list, word, expected, excluded_types):
+    freq_list.excluded_word_types = excluded_types
+
+    assert freq_list.validate_word(word) == expected
 
 
-def test_word_validator_type_default():
-    assert word_validator_exclude_by_type(Word("wow", "wow", [WordType.VERB]))
+def test_word_validator_type_default(freq_list):
+    assert freq_list.validate_word(Word("wow", "wow", [WordType.VERB]))
 
 
-def test_word_validator_type_default_false():
-    assert not (word_validator_exclude_by_type(Word("wow", "wow", [WordType.PARTICLE])))
+def test_word_validator_type_default_false(freq_list):
+    assert not freq_list.validate_word(Word("wow", "wow", [WordType.PARTICLE]))
 
 
 get_representation_test_data = [
@@ -504,12 +527,16 @@ def test_get_representation_invalid(freq_list):
         freq_list.get_representation("")
 
 
-def test_process_big_text(freq_list):
-    from os.path import dirname, abspath, join
+big_text_data = [
+    ("bigtext1.txt", ["警報", "鬼", "先"]),
+    ("bigtext2.txt", ["実際", "現状", "確認"]),
+]
 
+
+@pytest.mark.parametrize("file,expected", big_text_data)
+def test_process_big_text(freq_list, file, expected):
     file_path = dirname(abspath(__file__))
     freq_list.process_file(join(file_path, "bigtext1.txt"))
 
-    assert "警報" in freq_list
-    assert "鬼" in freq_list
-    assert "先" in freq_list
+    for word in expected:
+        assert word in freq_list

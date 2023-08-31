@@ -12,16 +12,10 @@ from .kanji import all_kanji_in_string, Kanji
 from .util import percent_of
 from .word import Word, WordType
 
-EXCLUDED_WORD_TYPES: list[WordType] = [
-    WordType.PARTICLE,
-    WordType.AUXILIARY_VERB,
-    WordType.SUPPLEMENTARY_SYMBOL,
-    WordType.BLANK_SPACE,
-    WordType.NUMERAL,
-]
 
-
-def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -> bool:
+def word_validator_exclude_by_type(
+    input_word: Word, excluded_word_types: list[WordType]
+) -> bool:
     """
     Validates a word by excluding it if it is of a certain type lists in `excluded_word_types`.
 
@@ -37,8 +31,6 @@ def word_validator_exclude_by_type(input_word: Word, excluded_word_types=None) -
     bool
         Whether the word is valid or not.
     """
-    if excluded_word_types is None:
-        excluded_word_types = EXCLUDED_WORD_TYPES
     for word_type in input_word.types:
         if word_type in excluded_word_types:
             return False
@@ -56,18 +48,29 @@ class JapaneseFrequencyList:
     _word_count: int
     _tagger: Tagger
     _word_validator: Callable[[Word], bool]
+    compare_surface: bool
+    excluded_word_types: list[WordType] = [
+        WordType.PARTICLE,
+        WordType.AUXILIARY_VERB,
+        WordType.SUPPLEMENTARY_SYMBOL,
+        WordType.BLANK_SPACE,
+        WordType.NUMERAL,
+    ]
 
     def __init__(
         self,
-        word_validator: Callable[[Word], bool] = word_validator_exclude_by_type,
         text_to_analyse: list = None,
         tagger_instance=None,
+        compare_surface: bool = False,
+        excluded_word_types: list[WordType] = None,
     ):
         self._unique_words = {}
         self._unique_kanji = {}
         self._word_count = 0
+        self.compare_surface = compare_surface
 
-        self._word_validator = word_validator
+        if excluded_word_types is not None:
+            self.excluded_word_types = excluded_word_types
 
         self._tagger = tagger_instance
         if not self._tagger:
@@ -103,6 +106,8 @@ class JapaneseFrequencyList:
     def __contains__(self, word: str) -> bool:
         """
         Whether the representation of a word is in the frequency list.
+
+        This will compare against surfaces only if `compare_surface` is True.
         Parameters
         ----------
         word : str
@@ -113,7 +118,12 @@ class JapaneseFrequencyList:
         bool
             Whether the word is in the frequency list.
         """
-        return word in self._unique_words.keys()
+        contains = word in self._unique_words
+
+        if self.compare_surface and not contains:
+            contains = any(word in word_slot for word_slot in self.wordslots)
+
+        return contains
 
     def __getitem__(self, word: str) -> WordSlot:
         """
@@ -310,6 +320,22 @@ class JapaneseFrequencyList:
 
         self._unique_kanji[kanji.representation] = kanji
 
+    def validate_word(self, word: Word) -> bool:
+        """
+        Validates a word, checking if it should be excluded or not.
+
+        This currently checks if the word is in the list of excluded types and removes it if it is.
+        Parameters
+        ----------
+        word : Word
+            The word to validate.
+        Returns
+        -------
+        bool
+            Whether the word is valid or not.
+        """
+        return word_validator_exclude_by_type(word, self.excluded_word_types)
+
     def add_word(self, word: Word) -> None:
         """
         Adds a word to the frequency list.
@@ -384,11 +410,11 @@ class JapaneseFrequencyList:
         line_to_process : str
             The line to process.
         """
-        line_to_process = line_to_process.replace("\n", "")
+        line_to_process = line_to_process.replace("\n", "").strip()
         words, kanji = self.parse_line(line_to_process)
 
         [self.add_kanji(kanji) for kanji in kanji]
-        [self.add_word(word) for word in words if self._word_validator(word)]
+        [self.add_word(word) for word in words if self.validate_word(word)]
 
     def process_text(self, text_to_process: str) -> None:
         """
