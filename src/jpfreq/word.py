@@ -84,6 +84,7 @@ class WordType(Enum):
     UNINDEPENDENT: str = "非自立可能"
     ADNOMINAL: str = "連体詞"
     CONJUNCTION: str = "接続詞"
+    UNKNOWN: str = ""
 
 
 @dataclass()
