@@ -191,7 +191,8 @@ class JapaneseFrequencyList:
     @property
     def unique_words_all(self) -> tuple[int, int, float]:
         """
-        Returns the number of unique words, the number of unique words used once, and the percentage of unique words used once.
+        Returns the number of unique words, the number of unique words used once,
+        and the percentage of unique words used once.
         Returns
         -------
         tuple[int, int, float]
@@ -231,7 +232,8 @@ class JapaneseFrequencyList:
     @property
     def unique_kanji_all(self) -> tuple[int, int, float]:
         """
-        Returns the number of unique kanji, the number of unique kanji used once, and the percentage of unique kanji used once.
+        Returns the number of unique kanji, the number of unique kanji used once,
+        and the percentage of unique kanji used once.
         Returns
         -------
         tuple[int, int, float]

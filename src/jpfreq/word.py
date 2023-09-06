@@ -64,8 +64,8 @@ class WordType(Enum):
     SUFFIX: str = "接尾辞"
     PREFIX: str = "接頭辞"
 
-    # SUPPLEMENTARY
-    SUPPLEMENTARY: str = "補助記号"
+    # SYMBOLS
+    SYMBOL: str = "記号"
     ASCII_ART: str = "ＡＡ"
     EMOTICON: str = "顔文字"
     PERIOD: str = "句点"
@@ -73,12 +73,12 @@ class WordType(Enum):
     BRACKET_CLOSE: str = "括弧閉"
     COMMA: str = "読点"
     CHARACTER: str = "文字"
+    SUPPLEMENTARY_SYMBOL: str = "補助記号"
 
     # OTHER
     GENERAL: str = "一般"
     FILLER: str = "フィラー"
     TARI: str = "タリ"
-    SUPPLEMENTARY_SYMBOL: str = "補助記号"
     INTERJECTION: str = "感動詞"
     BLANK_SPACE: str = "空白"
     UNINDEPENDENT: str = "非自立可能"

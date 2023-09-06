@@ -4,7 +4,7 @@
 
 from json import dumps
 from collections import OrderedDict
-from typing import Generator
+from typing import Iterable
 from ..jp_frequency_list import JapaneseFrequencyList
 from .iexporter import IExporter
 
@@ -14,7 +14,9 @@ class JsonExporter(IExporter):
         pass
 
     @staticmethod
-    def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> dict:
+    def _create_export_dictionary(
+        frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False
+    ) -> dict:
         """
         Creates a dictionary that can be exported to JSON.
         Parameters
@@ -39,7 +41,13 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -> [str|dict]:
+    def export(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+        as_dict: bool = False,
+    ) -> str | dict:
         """
         Exports the frequency list to JSON.
         Parameters
@@ -58,12 +66,19 @@ class JsonExporter(IExporter):
         str
             The JSON string
         """
-        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+        result = self._create_export_dictionary(
+            frequency_list, limit=limit, combine=combine
+        )
 
         if as_dict:
             return result
 
         return dumps(result, ensure_ascii=False, indent=4)
-    
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -> Generator[str, None, None]:
+
+    def export_lazy(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+    ) -> Iterable[str]:
         return super().export_lazy(frequency_list, limit)

@@ -32,7 +32,7 @@ def compare_text_infos(actual: TextInfo, expected: TextInfo):
 
 
 @pytest.fixture
-def freq_list(scope="global"):
+def freq_list():
     return JapaneseFrequencyList()
 
 

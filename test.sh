@@ -60,7 +60,7 @@ exit_code=0
 
 # runs coverage with a html report
 # fails if cov < required_coverage
-result=$(pytest -n auto "$exit_first"  $report tests/)
+result=$(pytest -n auto "$exit_first" $report tests/)
 exit_code=$? 
 
 if [ "$save_report" = true ] ; then
