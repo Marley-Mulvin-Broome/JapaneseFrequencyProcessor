@@ -32,7 +32,7 @@
 
 from json import dumps
 from collections import OrderedDict
-from typing import Generator
+from typing import Iterable
 from ..jp_frequency_list import JapaneseFrequencyList
 from .iexporter import IExporter
 
@@ -42,7 +42,9 @@ class JsonExporter(IExporter):
         pass
 
     @staticmethod
-    def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; dict:
+    def _create_export_dictionary(
+        frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False
+    ) -&gt; dict:
         &#34;&#34;&#34;
         Creates a dictionary that can be exported to JSON.
         Parameters
@@ -67,7 +69,13 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
+    def export(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+        as_dict: bool = False,
+    ) -&gt; str | dict:
         &#34;&#34;&#34;
         Exports the frequency list to JSON.
         Parameters
@@ -86,14 +94,21 @@ class JsonExporter(IExporter):
         str
             The JSON string
         &#34;&#34;&#34;
-        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+        result = self._create_export_dictionary(
+            frequency_list, limit=limit, combine=combine
+        )
 
         if as_dict:
             return result
 
         return dumps(result, ensure_ascii=False, indent=4)
-    
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
+
+    def export_lazy(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+    ) -&gt; Iterable[str]:
         return super().export_lazy(frequency_list, limit)</code></pre>
 </details>
 </section>
@@ -120,7 +135,9 @@ class JsonExporter(IExporter):
         pass
 
     @staticmethod
-    def _create_export_dictionary(frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; dict:
+    def _create_export_dictionary(
+        frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False
+    ) -&gt; dict:
         &#34;&#34;&#34;
         Creates a dictionary that can be exported to JSON.
         Parameters
@@ -145,7 +162,13 @@ class JsonExporter(IExporter):
 
         return dictionary
 
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
+    def export(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+        as_dict: bool = False,
+    ) -&gt; str | dict:
         &#34;&#34;&#34;
         Exports the frequency list to JSON.
         Parameters
@@ -164,14 +187,21 @@ class JsonExporter(IExporter):
         str
             The JSON string
         &#34;&#34;&#34;
-        result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+        result = self._create_export_dictionary(
+            frequency_list, limit=limit, combine=combine
+        )
 
         if as_dict:
             return result
 
         return dumps(result, ensure_ascii=False, indent=4)
-    
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
+
+    def export_lazy(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = False,
+    ) -&gt; Iterable[str]:
         return super().export_lazy(frequency_list, limit)</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -181,7 +211,7 @@ class JsonExporter(IExporter):
 <h3>Methods</h3>
 <dl>
 <dt id="jpfreq.exporters.json.JsonExporter.export"><code class="name flex">
-<span>def <span class="ident">export</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False, as_dict: bool = False) ‑> [str | dict]</span>
+<span>def <span class="ident">export</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False, as_dict: bool = False) ‑> str | dict</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Exports the frequency list to JSON.
@@ -206,7 +236,13 @@ Parameters</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False, as_dict: bool = False) -&gt; [str|dict]:
+<pre><code class="python">def export(
+    self,
+    frequency_list: JapaneseFrequencyList,
+    limit: int = 100,
+    combine: bool = False,
+    as_dict: bool = False,
+) -&gt; str | dict:
     &#34;&#34;&#34;
     Exports the frequency list to JSON.
     Parameters
@@ -225,7 +261,9 @@ Parameters</p>
     str
         The JSON string
     &#34;&#34;&#34;
-    result = self._create_export_dictionary(frequency_list, limit=limit, combine=combine)
+    result = self._create_export_dictionary(
+        frequency_list, limit=limit, combine=combine
+    )
 
     if as_dict:
         return result
@@ -234,7 +272,7 @@ Parameters</p>
 </details>
 </dd>
 <dt id="jpfreq.exporters.json.JsonExporter.export_lazy"><code class="name flex">
-<span>def <span class="ident">export_lazy</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False) ‑> Generator[str, None, None]</span>
+<span>def <span class="ident">export_lazy</span></span>(<span>self, frequency_list: <a title="jpfreq.jp_frequency_list.JapaneseFrequencyList" href="../jp_frequency_list.html#jpfreq.jp_frequency_list.JapaneseFrequencyList">JapaneseFrequencyList</a>, limit: int = 100, combine: bool = False) ‑> Iterable[str]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -242,7 +280,12 @@ Parameters</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = False) -&gt; Generator[str, None, None]:
+<pre><code class="python">def export_lazy(
+    self,
+    frequency_list: JapaneseFrequencyList,
+    limit: int = 100,
+    combine: bool = False,
+) -&gt; Iterable[str]:
     return super().export_lazy(frequency_list, limit)</code></pre>
 </details>
 </dd>

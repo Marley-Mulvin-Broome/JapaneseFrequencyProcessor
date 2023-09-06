@@ -97,7 +97,33 @@ def word_rep(word: UnidicNode):
     if word.feature.lemma is None:
         return word.surface
 
-    return f&#34;{word.feature.lemma.split(&#39;-&#39;)[0]}&#34;</code></pre>
+    return f&#34;{word.feature.lemma.split(&#39;-&#39;)[0]}&#34;
+
+
+def in_range(value: int, minimum: int, maximum: int):
+    &#34;&#34;&#34;
+    Checks if a value is in a range.
+    Parameters
+    ----------
+    value : int
+        The value to check.
+    minimum : int
+        The minimum value (inclusive). -1 for no minimum.
+    maximum : int
+        The maximum value (inclusive). -1 for no maximum.
+
+    Returns
+    -------
+    bool
+        Whether the value is in the range or not.
+    &#34;&#34;&#34;
+    if minimum != -1 and value &lt; minimum:
+        return False
+
+    if maximum != -1 and value &gt; maximum:
+        return False
+
+    return True</code></pre>
 </details>
 </section>
 <section>
@@ -107,6 +133,56 @@ def word_rep(word: UnidicNode):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="jpfreq.util.in_range"><code class="name flex">
+<span>def <span class="ident">in_range</span></span>(<span>value: int, minimum: int, maximum: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Checks if a value is in a range.
+Parameters</p>
+<hr>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>int</code></dt>
+<dd>The value to check.</dd>
+<dt><strong><code>minimum</code></strong> :&ensp;<code>int</code></dt>
+<dd>The minimum value (inclusive). -1 for no minimum.</dd>
+<dt><strong><code>maximum</code></strong> :&ensp;<code>int</code></dt>
+<dd>The maximum value (inclusive). -1 for no maximum.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Whether the value is in the range or not.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def in_range(value: int, minimum: int, maximum: int):
+    &#34;&#34;&#34;
+    Checks if a value is in a range.
+    Parameters
+    ----------
+    value : int
+        The value to check.
+    minimum : int
+        The minimum value (inclusive). -1 for no minimum.
+    maximum : int
+        The maximum value (inclusive). -1 for no maximum.
+
+    Returns
+    -------
+    bool
+        Whether the value is in the range or not.
+    &#34;&#34;&#34;
+    if minimum != -1 and value &lt; minimum:
+        return False
+
+    if maximum != -1 and value &gt; maximum:
+        return False
+
+    return True</code></pre>
+</details>
+</dd>
 <dt id="jpfreq.util.parse_pos_node"><code class="name flex">
 <span>def <span class="ident">parse_pos_node</span></span>(<span>pos: str) ‑> list[str]</span>
 </code></dt>
@@ -256,6 +332,7 @@ This is the lemma of the word.</p>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="jpfreq.util.in_range" href="#jpfreq.util.in_range">in_range</a></code></li>
 <li><code><a title="jpfreq.util.parse_pos_node" href="#jpfreq.util.parse_pos_node">parse_pos_node</a></code></li>
 <li><code><a title="jpfreq.util.percent_of" href="#jpfreq.util.percent_of">percent_of</a></code></li>
 <li><code><a title="jpfreq.util.word_rep" href="#jpfreq.util.word_rep">word_rep</a></code></li>

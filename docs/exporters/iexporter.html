@@ -38,11 +38,21 @@ from ..jp_frequency_list import JapaneseFrequencyList
 
 class IExporter(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; str:
+    def export(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = True,
+    ) -&gt; str:
         raise NotImplementedError
-    
+
     @abc.abstractmethod
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; Generator[str, None, None]:
+    def export_lazy(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = True,
+    ) -&gt; Generator[str, None, None]:
         raise NotImplementedError</code></pre>
 </details>
 </section>
@@ -66,11 +76,21 @@ class IExporter(metaclass=abc.ABCMeta):
 </summary>
 <pre><code class="python">class IExporter(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; str:
+    def export(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = True,
+    ) -&gt; str:
         raise NotImplementedError
-    
+
     @abc.abstractmethod
-    def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; Generator[str, None, None]:
+    def export_lazy(
+        self,
+        frequency_list: JapaneseFrequencyList,
+        limit: int = 100,
+        combine: bool = True,
+    ) -&gt; Generator[str, None, None]:
         raise NotImplementedError</code></pre>
 </details>
 <h3>Subclasses</h3>
@@ -89,7 +109,12 @@ class IExporter(metaclass=abc.ABCMeta):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; str:
+def export(
+    self,
+    frequency_list: JapaneseFrequencyList,
+    limit: int = 100,
+    combine: bool = True,
+) -&gt; str:
     raise NotImplementedError</code></pre>
 </details>
 </dd>
@@ -103,7 +128,12 @@ def export(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combin
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def export_lazy(self, frequency_list: JapaneseFrequencyList, limit: int = 100, combine: bool = True) -&gt; Generator[str, None, None]:
+def export_lazy(
+    self,
+    frequency_list: JapaneseFrequencyList,
+    limit: int = 100,
+    combine: bool = True,
+) -&gt; Generator[str, None, None]:
     raise NotImplementedError</code></pre>
 </details>
 </dd>

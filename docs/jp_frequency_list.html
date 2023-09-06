@@ -39,7 +39,7 @@ from os.path import isfile as file_exists
 from .word_slot import WordSlot, get_unique_wordslots
 from .text_info import TextInfo
 from .kanji import all_kanji_in_string, Kanji
-from .util import percent_of
+from .util import percent_of, in_range
 from .word import Word, WordType
 
 
@@ -221,7 +221,8 @@ class JapaneseFrequencyList:
     @property
     def unique_words_all(self) -&gt; tuple[int, int, float]:
         &#34;&#34;&#34;
-        Returns the number of unique words, the number of unique words used once, and the percentage of unique words used once.
+        Returns the number of unique words, the number of unique words used once,
+        and the percentage of unique words used once.
         Returns
         -------
         tuple[int, int, float]
@@ -261,7 +262,8 @@ class JapaneseFrequencyList:
     @property
     def unique_kanji_all(self) -&gt; tuple[int, int, float]:
         &#34;&#34;&#34;
-        Returns the number of unique kanji, the number of unique kanji used once, and the percentage of unique kanji used once.
+        Returns the number of unique kanji, the number of unique kanji used once,
+        and the percentage of unique kanji used once.
         Returns
         -------
         tuple[int, int, float]
@@ -285,7 +287,9 @@ class JapaneseFrequencyList:
         self._unique_words.clear()
         self._unique_kanji.clear()
 
-    def get_most_frequent(self, limit: int = 100) -&gt; list[WordSlot]:
+    def get_most_frequent(
+        self, limit: int = 100, minimum: int = -1, maximum: int = -1
+    ) -&gt; list[WordSlot]:
         &#34;&#34;&#34;
         Returns a list of the most frequent words in the text with the specified limit.
         If limit is -1, then all words are returned.
@@ -293,6 +297,10 @@ class JapaneseFrequencyList:
         ----------
         limit : int
             The number of words to return.
+        minimum : int
+            The minimum frequency of the words to return (inclusive). -1 means no minimum.
+        maximum : int
+            The maximum frequency of the words to return (inclusive). -1 means no maximum.
         Returns
         -------
         list[WordSlot]
@@ -301,6 +309,13 @@ class JapaneseFrequencyList:
         item_array: list[WordSlot] = sorted(
             self.wordslots, key=lambda x: x.frequency, reverse=True
         )
+
+        if minimum != -1 or maximum != -1:
+            item_array = [
+                item
+                for item in item_array
+                if in_range(item.frequency, minimum, maximum)
+            ]
 
         if limit == -1 or limit &gt; len(item_array):
             return item_array
@@ -706,7 +721,8 @@ class JapaneseFrequencyList:
     @property
     def unique_words_all(self) -&gt; tuple[int, int, float]:
         &#34;&#34;&#34;
-        Returns the number of unique words, the number of unique words used once, and the percentage of unique words used once.
+        Returns the number of unique words, the number of unique words used once,
+        and the percentage of unique words used once.
         Returns
         -------
         tuple[int, int, float]
@@ -746,7 +762,8 @@ class JapaneseFrequencyList:
     @property
     def unique_kanji_all(self) -&gt; tuple[int, int, float]:
         &#34;&#34;&#34;
-        Returns the number of unique kanji, the number of unique kanji used once, and the percentage of unique kanji used once.
+        Returns the number of unique kanji, the number of unique kanji used once,
+        and the percentage of unique kanji used once.
         Returns
         -------
         tuple[int, int, float]
@@ -770,7 +787,9 @@ class JapaneseFrequencyList:
         self._unique_words.clear()
         self._unique_kanji.clear()
 
-    def get_most_frequent(self, limit: int = 100) -&gt; list[WordSlot]:
+    def get_most_frequent(
+        self, limit: int = 100, minimum: int = -1, maximum: int = -1
+    ) -&gt; list[WordSlot]:
         &#34;&#34;&#34;
         Returns a list of the most frequent words in the text with the specified limit.
         If limit is -1, then all words are returned.
@@ -778,6 +797,10 @@ class JapaneseFrequencyList:
         ----------
         limit : int
             The number of words to return.
+        minimum : int
+            The minimum frequency of the words to return (inclusive). -1 means no minimum.
+        maximum : int
+            The maximum frequency of the words to return (inclusive). -1 means no maximum.
         Returns
         -------
         list[WordSlot]
@@ -786,6 +809,13 @@ class JapaneseFrequencyList:
         item_array: list[WordSlot] = sorted(
             self.wordslots, key=lambda x: x.frequency, reverse=True
         )
+
+        if minimum != -1 or maximum != -1:
+            item_array = [
+                item
+                for item in item_array
+                if in_range(item.frequency, minimum, maximum)
+            ]
 
         if limit == -1 or limit &gt; len(item_array):
             return item_array
@@ -1009,7 +1039,8 @@ def unique_kanji(self) -&gt; int:
 </dd>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_kanji_all"><code class="name">var <span class="ident">unique_kanji_all</span> : tuple[int, int, float]</code></dt>
 <dd>
-<div class="desc"><p>Returns the number of unique kanji, the number of unique kanji used once, and the percentage of unique kanji used once.
+<div class="desc"><p>Returns the number of unique kanji, the number of unique kanji used once,
+and the percentage of unique kanji used once.
 Returns</p>
 <hr>
 <dl>
@@ -1023,7 +1054,8 @@ Returns</p>
 <pre><code class="python">@property
 def unique_kanji_all(self) -&gt; tuple[int, int, float]:
     &#34;&#34;&#34;
-    Returns the number of unique kanji, the number of unique kanji used once, and the percentage of unique kanji used once.
+    Returns the number of unique kanji, the number of unique kanji used once,
+    and the percentage of unique kanji used once.
     Returns
     -------
     tuple[int, int, float]
@@ -1093,7 +1125,8 @@ def unique_words(self) -&gt; int:
 </dd>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.unique_words_all"><code class="name">var <span class="ident">unique_words_all</span> : tuple[int, int, float]</code></dt>
 <dd>
-<div class="desc"><p>Returns the number of unique words, the number of unique words used once, and the percentage of unique words used once.
+<div class="desc"><p>Returns the number of unique words, the number of unique words used once,
+and the percentage of unique words used once.
 Returns</p>
 <hr>
 <dl>
@@ -1107,7 +1140,8 @@ Returns</p>
 <pre><code class="python">@property
 def unique_words_all(self) -&gt; tuple[int, int, float]:
     &#34;&#34;&#34;
-    Returns the number of unique words, the number of unique words used once, and the percentage of unique words used once.
+    Returns the number of unique words, the number of unique words used once,
+    and the percentage of unique words used once.
     Returns
     -------
     tuple[int, int, float]
@@ -1335,7 +1369,7 @@ Returns</p>
 </details>
 </dd>
 <dt id="jpfreq.jp_frequency_list.JapaneseFrequencyList.get_most_frequent"><code class="name flex">
-<span>def <span class="ident">get_most_frequent</span></span>(<span>self, limit: int = 100) ‑> list[<a title="jpfreq.word_slot.WordSlot" href="word_slot.html#jpfreq.word_slot.WordSlot">WordSlot</a>]</span>
+<span>def <span class="ident">get_most_frequent</span></span>(<span>self, limit: int = 100, minimum: int = -1, maximum: int = -1) ‑> list[<a title="jpfreq.word_slot.WordSlot" href="word_slot.html#jpfreq.word_slot.WordSlot">WordSlot</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns a list of the most frequent words in the text with the specified limit.
@@ -1345,6 +1379,10 @@ Parameters</p>
 <dl>
 <dt><strong><code>limit</code></strong> :&ensp;<code>int</code></dt>
 <dd>The number of words to return.</dd>
+<dt><strong><code>minimum</code></strong> :&ensp;<code>int</code></dt>
+<dd>The minimum frequency of the words to return (inclusive). -1 means no minimum.</dd>
+<dt><strong><code>maximum</code></strong> :&ensp;<code>int</code></dt>
+<dd>The maximum frequency of the words to return (inclusive). -1 means no maximum.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1355,7 +1393,9 @@ Parameters</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_most_frequent(self, limit: int = 100) -&gt; list[WordSlot]:
+<pre><code class="python">def get_most_frequent(
+    self, limit: int = 100, minimum: int = -1, maximum: int = -1
+) -&gt; list[WordSlot]:
     &#34;&#34;&#34;
     Returns a list of the most frequent words in the text with the specified limit.
     If limit is -1, then all words are returned.
@@ -1363,6 +1403,10 @@ Parameters</p>
     ----------
     limit : int
         The number of words to return.
+    minimum : int
+        The minimum frequency of the words to return (inclusive). -1 means no minimum.
+    maximum : int
+        The maximum frequency of the words to return (inclusive). -1 means no maximum.
     Returns
     -------
     list[WordSlot]
@@ -1371,6 +1415,13 @@ Parameters</p>
     item_array: list[WordSlot] = sorted(
         self.wordslots, key=lambda x: x.frequency, reverse=True
     )
+
+    if minimum != -1 or maximum != -1:
+        item_array = [
+            item
+            for item in item_array
+            if in_range(item.frequency, minimum, maximum)
+        ]
 
     if limit == -1 or limit &gt; len(item_array):
         return item_array
