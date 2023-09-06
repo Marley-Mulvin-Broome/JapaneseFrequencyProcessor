@@ -69,3 +69,29 @@ def word_rep(word: UnidicNode):
         return word.surface
 
     return f"{word.feature.lemma.split('-')[0]}"
+
+
+def in_range(value: int, minimum: int, maximum: int):
+    """
+    Checks if a value is in a range.
+    Parameters
+    ----------
+    value : int
+        The value to check.
+    minimum : int
+        The minimum value (inclusive). -1 for no minimum.
+    maximum : int
+        The maximum value (inclusive). -1 for no maximum.
+
+    Returns
+    -------
+    bool
+        Whether the value is in the range or not.
+    """
+    if minimum != -1 and value < minimum:
+        return False
+
+    if maximum != -1 and value > maximum:
+        return False
+
+    return True

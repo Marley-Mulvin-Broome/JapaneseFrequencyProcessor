@@ -561,4 +561,41 @@ def test_most_frequent_sorted_descending(freq_list):
     assert is_obj_sorted(most_frequent, key=lambda x: x.frequency, ascending=False)
 
 
-# def test_most_frequent_sorted_ascending(freq_list):
+def test_most_frequent_min(freq_list):
+    content = "猫　犬　本　本　本　本"
+    freq_list.process_text(content)
+
+    most_frequent = freq_list.get_most_frequent(minimum=2)
+    assert len(most_frequent) == 1
+
+    most_frequent = freq_list.get_most_frequent(minimum=3)
+    assert len(most_frequent) == 1
+
+    most_frequent = freq_list.get_most_frequent(minimum=1)
+    assert len(most_frequent) == 3
+
+    most_frequent = freq_list.get_most_frequent(minimum=0)
+    assert len(most_frequent) == 3
+
+    most_frequent = freq_list.get_most_frequent(minimum=-1)
+    assert len(most_frequent) == 3
+
+
+def test_most_frequent_max(freq_list):
+    content = "猫　犬　本　本　本　本"
+    freq_list.process_text(content)
+
+    most_frequent = freq_list.get_most_frequent(maximum=2)
+    assert len(most_frequent) == 2
+
+    most_frequent = freq_list.get_most_frequent(maximum=4)
+    assert len(most_frequent) == 3
+
+    most_frequent = freq_list.get_most_frequent(maximum=0)
+    assert len(most_frequent) == 0
+
+    most_frequent = freq_list.get_most_frequent(maximum=100)
+    assert len(most_frequent) == 3
+
+    most_frequent = freq_list.get_most_frequent(maximum=-1)
+    assert len(most_frequent) == 3

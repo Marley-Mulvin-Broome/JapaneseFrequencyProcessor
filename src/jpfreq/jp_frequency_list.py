@@ -9,7 +9,7 @@ from os.path import isfile as file_exists
 from .word_slot import WordSlot, get_unique_wordslots
 from .text_info import TextInfo
 from .kanji import all_kanji_in_string, Kanji
-from .util import percent_of
+from .util import percent_of, in_range
 from .word import Word, WordType
 
 
@@ -257,7 +257,9 @@ class JapaneseFrequencyList:
         self._unique_words.clear()
         self._unique_kanji.clear()
 
-    def get_most_frequent(self, limit: int = 100) -> list[WordSlot]:
+    def get_most_frequent(
+        self, limit: int = 100, minimum: int = -1, maximum: int = -1
+    ) -> list[WordSlot]:
         """
         Returns a list of the most frequent words in the text with the specified limit.
         If limit is -1, then all words are returned.
@@ -265,6 +267,10 @@ class JapaneseFrequencyList:
         ----------
         limit : int
             The number of words to return.
+        minimum : int
+            The minimum frequency of the words to return (inclusive). -1 means no minimum.
+        maximum : int
+            The maximum frequency of the words to return (inclusive). -1 means no maximum.
         Returns
         -------
         list[WordSlot]
@@ -273,6 +279,13 @@ class JapaneseFrequencyList:
         item_array: list[WordSlot] = sorted(
             self.wordslots, key=lambda x: x.frequency, reverse=True
         )
+
+        if minimum != -1 or maximum != -1:
+            item_array = [
+                item
+                for item in item_array
+                if in_range(item.frequency, minimum, maximum)
+            ]
 
         if limit == -1 or limit > len(item_array):
             return item_array
