@@ -13,6 +13,15 @@ def in_range(number: float, a: float, b: float) -> bool:
     return a <= number <= b
 
 
+def is_obj_sorted(items: list[object], key, ascending=False):
+    """Returns True if the items are sorted by the key"""
+
+    if ascending:
+        return all(key(items[i]) <= key(items[i + 1]) for i in range(len(items) - 1))
+
+    return all(key(items[i]) >= key(items[i + 1]) for i in range(len(items) - 1))
+
+
 def compare_text_infos(actual: TextInfo, expected: TextInfo):
     assert actual.word_count == expected.word_count
     assert actual.unique_words == expected.unique_words
@@ -530,13 +539,26 @@ def test_get_representation_invalid(freq_list):
 big_text_data = [
     ("bigtext1.txt", ["警報", "鬼", "先"]),
     ("bigtext2.txt", ["実際", "現状", "確認"]),
+    ("bigsite1.html", ["警報", "鬼", "先", "小説"]),
 ]
 
 
 @pytest.mark.parametrize("file,expected", big_text_data)
 def test_process_big_text(freq_list, file, expected):
     file_path = dirname(abspath(__file__))
-    freq_list.process_file(join(file_path, "bigtext1.txt"))
+    freq_list.process_file(join(file_path, file))
 
     for word in expected:
         assert word in freq_list
+
+
+def test_most_frequent_sorted_descending(freq_list):
+    file_path = dirname(abspath(__file__))
+    freq_list.process_file(join(file_path, "bigtext1.txt"))
+
+    most_frequent = freq_list.get_most_frequent()
+
+    assert is_obj_sorted(most_frequent, key=lambda x: x.frequency, ascending=False)
+
+
+# def test_most_frequent_sorted_ascending(freq_list):
